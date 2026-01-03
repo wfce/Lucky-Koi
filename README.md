@@ -1,5 +1,5 @@
 
-# 幸运锦鲤 (Lucky Koi Protocol) 🎏
+# 幸运锦鲤 (Lucky Koi Protocol)  - 前端🎏
 
 > 全球首款基于 Chainlink VRF V2.5 驱动的去中心化物理级真随机瑞气平台。
 > **代码即法律 (Code is Law)** | **持仓即入池 (Hold to Win)**
@@ -45,8 +45,8 @@
 
 1.  **克隆仓库**
     ```bash
-    git clone https://github.com/your-username/lucky-koi-frontend.git
-    cd lucky-koi-frontend
+    git clone https://github.com/wfce/Lucky-Koi.git
+    cd Lucky-Koi
     ```
 
 2.  **安装依赖**
