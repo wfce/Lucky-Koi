@@ -1,5 +1,5 @@
 
-# 幸运锦鲤 (Lucky Koi Protocol)  - 前端🎏
+# 幸运锦鲤 (Lucky Koi Protocol) 🎏 - 前端
 
 > 全球首款基于 Chainlink VRF V2.5 驱动的去中心化物理级真随机瑞气平台。
 > **代码即法律 (Code is Law)** | **持仓即入池 (Hold to Win)**
