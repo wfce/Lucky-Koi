@@ -7,19 +7,19 @@
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![React](https://img.shields.io/badge/React-18-61DAFB.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6.svg)
-![BSC](https://img.shields.io/badge/Network-BSC_Testnet-F3BA2F.svg)
+![BSC](https://img.shields.io/badge/Network-BSC_Mainnet-F3BA2F.svg)
 
 ## 📖 项目简介
 
-**Lucky Koi Protocol** 是一个运行在 BNB Chain (BSC) 测试网上的去中心化应用 (DApp)。它打破了传统彩票“买票候奖”的模式，创新性地采用了“持仓即挖矿/中奖”的机制。
+**Lucky Koi Protocol** 是一个运行在 BNB Chain (BSC) 主网上的去中心化应用 (DApp)。它打破了传统彩票“买票候奖”的模式，创新性地采用了“持仓即挖矿/中奖”的机制。
 
-只要用户的钱包持有指定数量的代币（目前配置为 BUSD）并完成链上注册，即可永久获得每轮抽奖资格。整个过程由 **Chainlink Automation** 自动触发，并由 **Chainlink VRF** 提供不可篡改的链上随机数，确保绝对公平。
+只要用户的钱包持有指定数量的代币（目前配置为 $锦鲤）并完成链上注册，即可永久获得每轮抽奖资格。整个过程由社区成员通过 **公开悬赏机制** 手动触发，并由 **Chainlink VRF** 提供不可篡改的链上随机数，确保绝对公平。
 
 ## ✨ 核心特性
 
 *   **🚫 无需购票 (No Tickets):** 告别重复消费。一次注册，终身参与（只要持仓达标）。
 *   **🎲 物理真随机 (True Randomness):** 集成 Chainlink VRF V2.5，随机数生成过程链上可验证，杜绝黑箱操作。
-*   **🤖 全自动运行 (Fully Automated):** 基于 Chainlink Automation，从开奖、选人到派发奖金，全流程无需人工干预。
+*   **🤝 社区自治 (Community Driven):** 去中心化悬赏机制。任何人均可手动触发开奖并赚取 BNB 赏金，确保协议永续运行，不依赖中心化自动化服务。
 *   **⚖️ 动态奖金 (Dynamic Rewards):** 奖金权重与持仓量挂钩。持仓越多，获得奖池的比例越高（50% - 100%）。
 *   **🛡️ 社区治理 (Governance):** 引入“黑暗森林”机制。任何人可审计持仓不足的用户，触发熔断与清理机制。
 *   **♻️ 资产回收 (Recycle):** 30天无人认领的奖金（死账户/黑名单）将被社区回收至总奖池，防止资金沉淀。
@@ -31,7 +31,7 @@
 *   **核心框架:** React 18, TypeScript, Vite
 *   **UI 库:** Tailwind CSS, Lucide React (图标)
 *   **Web3 交互:** Ethers.js v6
-*   **合约网络:** BSC Testnet (Chain ID: 97)
+*   **合约网络:** BSC Mainnet (Chain ID: 56)
 
 ## 🚀 快速开始
 
@@ -67,13 +67,14 @@
 ## 📜 详细规则 (Game Rules)
 
 ### 1. 参与门槛
-*   用户需持有目标代币（如 BUSD）。
+*   用户需持有目标代币（如 $锦鲤）。
 *   **最低持仓:** 10,000 Token (由合约配置决定)。
 *   **注册:** 连接钱包并点击“立即激活锦鲤身份” (Register) 上链。
 
 ### 2. 开奖机制
-*   **触发条件:** 时间间隔满足（如每 1 小时） + 奖池资金充足 + LINK 燃料充足。
-*   **执行:** Chainlink Automation 会自动检测并调用 `performUpkeep`，或由用户手动点击“唤醒锦鲤”触发。
+*   **触发条件:** 时间间隔满足（每 30 分钟 + 奖池资金充足 + LINK 燃料充足。
+*   **执行:** 任意用户均可调用 `triggerKoi`（唤醒锦鲤）触发开奖。
+*   **激励:** 为确保开奖按时进行，首个触发者将直接获得 Gas 补偿及额外的 BNB 赏金。
 *   **随机数:** 合约请求 VRF 随机数，Chainlink 节点返回随机值，计算出中奖索引。
 
 ### 3. 奖金分配算法
@@ -113,7 +114,7 @@
 
 ## ⚠️ 免责声明
 
-本项目仅供学习与技术交流使用。智能合约部署在 BSC 测试网。涉及真实资产交互时，请务必自行审查代码风险。作者不对任何因合约漏洞或操作失误导致的资产损失负责。
+本项目仅供学习与技术交流使用。智能合约部署在 BSC 主网。涉及真实资产交互时，请务必自行审查代码风险。作者不对任何因合约漏洞或操作失误导致的资产损失负责。
 
 ## 📄 开源协议
 

@@ -1,8 +1,8 @@
 
 export const LUCKY_LOTTERY_ABI = [
-  // 写操作
-  "function setToken(address tokenAddr, uint256 minHold, uint256 fullHold) external",
+  // 写操作 (社区功能)
   "function buyLink() external",
+  "function convertLink() external", // New
   "function topUpSubscription() external",
   "function maintainLink() external",
   "function unwrapAllWBNB() external returns (uint256)",
@@ -11,6 +11,7 @@ export const LUCKY_LOTTERY_ABI = [
   "function claimPendingReward() external",
   "function recycleStuckPending(address user) external",
   "function triggerKoi() external returns (uint8 status, bool triggered)",
+  "function triggerKoiStrict() external",
   "function cleanup(uint256 maxIterations) external returns (uint256 processed, uint256 removed)",
   "function reportInvalid(address holder) external",
   "function cancelStuckKoi() external",
@@ -24,10 +25,13 @@ export const LUCKY_LOTTERY_ABI = [
   "function getMinPossibleReward() external view returns (uint256)",
   "function isPoolSufficient() external view returns (bool)",
   "function getContractLinkBalance() external view returns (uint256)",
+  "function getContractBep20LinkBalance() external view returns (uint256)", // New
   "function getSubscriptionBalance() external view returns (uint96)",
   "function getTotalLinkBalance() external view returns (uint256)",
+  "function getErc677LinkBalance() external view returns (uint256)", // New
   "function getHolderCount() external view returns (uint256)",
   "function needsLinkPurchase() external view returns (bool)",
+  "function needsLinkConversion() external view returns (bool)", // New
   "function hasLinkToTopUp() external view returns (bool)",
   
   // 结构化统计信息
@@ -35,11 +39,12 @@ export const LUCKY_LOTTERY_ABI = [
   "function getContractStats() external view returns (uint256 holderCnt, uint256 pool, uint256 nextTime, uint256 lotteries, uint256 rewards, uint256 pendingTotal, bool canTrig, bool inProg)",
   "function getPoolStats() external view returns (uint256 pool, uint256 minReward, uint256 maxReward, uint256 minRequired, bool sufficient)",
   "function getGasRewardStats() external view returns (uint256 total, uint256 current, uint256 base, uint256 max)",
-  "function getTriggerStats() external view returns (uint256 attempts, uint256 skipped, uint256 rate)",
-  "function getLinkStats() external view returns (uint256 contractBal, uint96 subBal, uint256 totalBal, uint256 availEth, bool needsBuy, bool hasTopUp, uint256 purchased, uint256 spent, uint256 received)",
+  // Updated getLinkStats signature
+  "function getLinkStats() external view returns (uint256 erc677Bal, uint256 bep20Bal, uint96 subBal, uint256 totalBal, uint256 availEth, bool needsBuy, bool needsConvert, bool hasTopUp, uint256 purchased, uint256 spent, uint256 received)",
   "function getUserInfo(address user) external view returns (bool registered, uint256 balance, uint256 rewardPct, bool valid, uint256 won, uint256 winCnt, uint256 pendingAmt)",
   "function getUserTriggerInfo(address user) external view returns (uint256 triggers, uint256 gasRewards, uint256 attempts, uint256 donations)",
-  "function getConfig() external view returns (address tokenAddr, address linkAddr, address routerAddr, address wbnbAddr, address quoterAddr, uint256 minHold, uint256 fullHold, uint256 koiInterval, uint256 maxH, uint32 gasLimit, bool tokenIsSet)",
+  // Updated getConfig signature
+  "function getConfig() external view returns (address tokenAddr, address link677Addr, address linkBep20Addr, address pegSwapAddr, address routerAddr, address wbnbAddr, uint256 minHold, uint256 fullHold, uint256 koiInterval, uint256 maxH, uint32 gasLimit, bool tokenIsSet, bool configIsLocked)",
   "function previewRewardPercentage(uint256 balance) external view returns (uint256)",
   "function getPendingDetails(address user) external view returns (uint256 amount, uint256 since, bool canRecycle, uint256 recycleTime)",
   "function getCleanupProgress() external view returns (uint256 idx, uint256 total, uint256 remaining, uint256 pct)",
@@ -61,7 +66,9 @@ export const LUCKY_LOTTERY_ABI = [
   "event LinkTopUp(uint256 amount)",
   "event CleanupProgress(uint256 processed, uint256 remaining, uint256 removed)",
   "event PendingRecycled(address indexed user, uint256 amount)",
-  "event GasRewardSent(address indexed trigger, uint256 amount)"
+  "event GasRewardSent(address indexed trigger, uint256 amount)",
+  "event LinkSwapped(uint256 bep20Amount, uint256 erc677Amount)", // New
+  "event PegSwapFailed(uint256 amount)" // New
 ];
 
 export const ERC20_ABI = [

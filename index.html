@@ -1,8 +1,9 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#050507">
     <meta name="description" content="幸运锦鲤 (Lucky Koi) - 全球首款由 Chainlink VRF 驱动的物理级真随机锦鲤系统。无需购票，持仓即得福泽。">
     <meta property="og:title" content="幸运锦鲤 (Lucky Koi)">
@@ -14,43 +15,47 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #e11d48;
-            --secondary: #8b5cf6;
+            --primary: #EF4444; /* Red 500 */
+            --secondary: #F59E0B; /* Amber 500 */
             --bg-deep: #050507;
         }
         body {
             font-family: 'Plus Jakarta Sans', 'Noto Sans SC', sans-serif;
             background-color: var(--bg-deep);
             background-image: 
-                radial-gradient(circle at 20% 30%, rgba(225, 29, 72, 0.1) 0%, transparent 40%),
-                radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.1) 0%, transparent 40%);
+                radial-gradient(circle at 10% 20%, rgba(239, 68, 68, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(245, 158, 11, 0.05) 0%, transparent 40%);
             color: #fafafa;
             min-height: 100vh;
             overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
         }
         .glass-card {
-            background: rgba(18, 18, 22, 0.6);
+            background: rgba(20, 18, 15, 0.6);
             backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.7);
         }
+        /* 红金渐变文字 */
         .accent-gradient {
-            background: linear-gradient(135deg, #fb7185 0%, #e11d48 50%, #7c3aed 100%);
+            background: linear-gradient(135deg, #FCD34D 0%, #F59E0B 40%, #EF4444 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+        /* 锦鲤主题按钮 */
         .action-button {
-            background: linear-gradient(135deg, #e11d48 0%, #7c3aed 100%);
+            background: linear-gradient(135deg, #EF4444 0%, #D97706 100%);
             color: white;
             font-weight: 800;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
-            box-shadow: 0 10px 25px -5px rgba(225, 29, 72, 0.3);
+            box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.3);
+            border: 1px solid rgba(255,255,255,0.1);
         }
         .action-button:hover:not(:disabled) {
             transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 20px 35px -5px rgba(225, 29, 72, 0.5);
+            box-shadow: 0 20px 35px -5px rgba(245, 158, 11, 0.4);
             filter: brightness(1.1);
         }
         
@@ -77,7 +82,7 @@
             left: 0;
         }
         .stat-glow {
-            text-shadow: 0 0 25px rgba(225, 29, 72, 0.6);
+            text-shadow: 0 0 25px rgba(245, 158, 11, 0.5);
         }
         @keyframes spin-slow {
             from { transform: rotate(0deg); }
@@ -85,6 +90,35 @@
         }
         .animate-spin-slow {
             animation: spin-slow 8s linear infinite;
+        }
+        /* 自定义波动动画 */
+        @keyframes wave {
+            0% { transform: translateY(0) scaleY(1); }
+            50% { transform: translateY(-5px) scaleY(1.1); }
+            100% { transform: translateY(0) scaleY(1); }
+        }
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0c; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555; 
+        }
+        /* 隐藏滚动条但保留功能 */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
     </style>
 <script type="importmap">

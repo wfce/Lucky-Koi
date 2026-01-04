@@ -24,6 +24,7 @@ export interface UserInfo {
   // User Trigger Stats
   triggers: number;
   gasRewardsCollected: string;
+  donations: string; // LINK donations
 }
 
 export interface GasRewardStats {
@@ -35,27 +36,32 @@ export interface GasRewardStats {
 
 export interface ContractConfig {
   tokenAddress: string;
-  linkToken: string;
+  link677Address: string;
+  linkBep20Address: string;
+  pegSwapAddress: string;
   swapRouter: string;
-  weth: string;
-  quoter: string;
+  wbnb: string;
   minHolding: string;
   fullRewardHolding: string;
   lotteryInterval: number;
   maxHolders: number;
   callbackGasLimit: number;
   tokenSet: boolean;
+  configLocked: boolean;
 }
 
 export interface LinkStats {
-  contractLinkBalance: string;
+  erc677Balance: string;
+  bep20Balance: string;
   subscriptionBalance: string;
   totalLinkBalance: string;
   availableEthForLink: string;
   needsBuy: boolean;
+  needsConvert: boolean;
   needsTopUp: boolean;
   totalLinkPurchased: string;
   totalEthSpent: string;
+  received: string; // LINK received from donations
 }
 
 export enum TriggerStatus {

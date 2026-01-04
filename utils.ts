@@ -59,6 +59,21 @@ export const parseRpcError = (error: any): { title: string, message: string } =>
   if (message.includes("StillValid") || reason.includes("StillValid")) {
     return { title: "用户仍然有效", message: "该用户的持仓仍然满足要求，无法标记为无效。" };
   }
+  if (message.includes("NoKoiInProgress") || reason.includes("NoKoiInProgress")) {
+    return { title: "状态正常", message: "当前没有卡住的抽奖请求，无需执行重置。" };
+  }
+  if (message.includes("TimeoutNotReached") || reason.includes("TimeoutNotReached")) {
+    return { title: "未到超时时间", message: "必须等待 Chainlink VRF 响应超时（2小时）后方可强制重置。" };
+  }
+  if (message.includes("InvalidParam") || reason.includes("InvalidParam")) {
+    return { title: "参数错误或条件不满足", message: "操作被拒绝，可能是时间间隔未到或触发条件不足。" };
+  }
+  if (message.includes("ConfigIsLocked") || reason.includes("ConfigIsLocked")) {
+    return { title: "配置已锁定", message: "合约关键参数已被永久锁定，无法更改。" };
+  }
+  if (message.includes("PegSwapFailed") || reason.includes("PegSwapFailed")) {
+    return { title: "PegSwap 失败", message: "BEP-20 LINK 转换为 ERC-677 LINK 失败，请检查 PegSwap 流动性。" };
+  }
 
   // 3. 通用网络错误
   if (error.code === "NETWORK_ERROR") {
