@@ -11,9 +11,10 @@ interface DashboardProps {
   history: LotteryRecord[];
   triggerStatus: TriggerStatus;
   countdown: { h: string, m: string, s: string, isZero: boolean };
+  mobileTerminal?: React.ReactNode;
 }
 
-export const Dashboard: React.FC<DashboardProps> = ({ stats, history, triggerStatus, countdown }) => {
+export const Dashboard: React.FC<DashboardProps> = ({ stats, history, triggerStatus, countdown, mobileTerminal }) => {
   const { t } = useLanguage();
   const isFlipped = stats?.inProgress || stats?.canTrigger || (countdown.isZero && !stats?.canTrigger && triggerStatus !== TriggerStatus.IntervalNotReached);
 
@@ -123,6 +124,12 @@ export const Dashboard: React.FC<DashboardProps> = ({ stats, history, triggerSta
           <HeroStat icon={<ShieldCheck size={14}/>} label={t('dashboard.stats.vrf')} value="VRF V2.5" />
         </div>
       </div>
+
+      {mobileTerminal && (
+        <div className="lg:hidden">
+          {mobileTerminal}
+        </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <CardIconBox icon={<Target size={20}/>} title={t('dashboard.features.f1Title')} desc={t('dashboard.features.f1Desc')} color="emerald" />

@@ -68,6 +68,10 @@ const App: React.FC = () => {
   const showNotification = useCallback((type: 'error' | 'success' | 'info', title: string, message: string) => { setNotification({ show: true, type, title, message }); }, []);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [activeTab]);
+
+  useEffect(() => {
     const timer = setInterval(() => { currentTimeRef.current = Math.floor(Date.now() / 1000); }, 1000);
     return () => clearInterval(timer);
   }, []);
@@ -450,20 +454,26 @@ const App: React.FC = () => {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start mt-6">
         <div className="lg:col-span-8 space-y-6 sm:space-y-8">
-          {activeTab === 'stats' && <Dashboard stats={stats} history={history} triggerStatus={triggerStatus} countdown={countdown} />}
+          {activeTab === 'stats' && (
+              <Dashboard 
+                stats={stats} 
+                history={history} 
+                triggerStatus={triggerStatus} 
+                countdown={countdown}
+                mobileTerminal={
+                  <PersonalTerminal account={account} loading={loading} userInfo={userInfo} config={config} tokenSymbol={tokenSymbol} tokenDecimals={tokenDecimals} hasSufficientBalance={hasSufficientBalance} onConnect={() => setIsModalOpen(true)} onExecute={executeTx} />
+                }
+              />
+          )}
           {activeTab === 'rules' && <Rules config={config} tokenSymbol={tokenSymbol} tokenDecimals={tokenDecimals} />}
           {activeTab === 'holders' && <Holders stats={stats} config={config} tokenSymbol={tokenSymbol} tokenDecimals={tokenDecimals} holdersData={holdersData} holdersPage={holdersPage} setHoldersPage={setHoldersPage} onExecute={executeTx} />}
           {activeTab === 'history' && <History history={history} historyPage={historyPage} setHistoryPage={setHistoryPage} />}
           {activeTab === 'admin' && <Admin loading={loading} linkStats={linkStats} gasRewardStats={gasRewardStats} cleanupProgress={cleanupProgress} readOnlyContract={readOnlyContract} onExecute={executeTx} showNotification={showNotification} />}
         </div>
-        <div className="lg:col-span-4 sticky top-32 hidden lg:block">
+        <div className="lg:col-span-4 sticky top-24 hidden lg:block">
           <PersonalTerminal account={account} loading={loading} userInfo={userInfo} config={config} tokenSymbol={tokenSymbol} tokenDecimals={tokenDecimals} hasSufficientBalance={hasSufficientBalance} onConnect={() => setIsModalOpen(true)} onExecute={executeTx} />
         </div>
       </main>
-
-      <div className="lg:hidden px-4 sm:px-6 mb-8">
-          <PersonalTerminal account={account} loading={loading} userInfo={userInfo} config={config} tokenSymbol={tokenSymbol} tokenDecimals={tokenDecimals} hasSufficientBalance={hasSufficientBalance} onConnect={() => setIsModalOpen(true)} onExecute={executeTx} />
-      </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 mt-16 flex flex-col md:flex-row gap-4 sm:gap-6">
         <AddressBox label="TOKEN CA" address={config?.tokenAddress || "..."} onCopy={(m) => showNotification('info', t('wallet.copySuccess'), m)} explorerLink={`https://bscscan.com/address/${config?.tokenAddress}`} />

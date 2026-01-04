@@ -122,7 +122,7 @@ export const translations = {
       title: "锦鲤名册 (共 {count} 位)",
       rank: "序号",
       wallet: "锦鲤钱包",
-      balance: "持仓余额 ({symbol})",
+      balance: "持仓余额",
       status: "状态",
       action: "操作",
       valid: "有效",
@@ -144,7 +144,7 @@ export const translations = {
     },
     admin: {
       oracleTitle: "Chainlink 预言机维护",
-      hunterTitle: "悬赏猎人公报 (Trigger Stats)",
+      hunterTitle: "悬赏猎人公报",
       recycleTitle: "过期奖金安全回收 (社区悬赏)",
       searchPlaceholder: "输入待查钱包地址...",
       pendingAmount: "待领金额",
