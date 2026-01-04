@@ -758,7 +758,7 @@ const App: React.FC = () => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <CardIconBox icon={<Target size={20}/>} title="终身参与资格" desc="一币双吃。持有 10,000 $锦鲤 不仅是资产，更是永续彩票。一次注册，终身自动参与每轮抽奖，资金零损耗，权益全掌控。" color="emerald" />
                 <CardIconBox icon={<Zap size={20}/>} title="社区自治驱动" desc="拒绝中心化依赖。通过链上“唤醒悬赏”机制，激励社区成员手动触发开奖。任何人皆可参与维护协议运行并赚取 GAS 奖励，代码即信用。" color="orange" />
-                <CardIconBox icon={<ShieldCheck size={20}/>} title="可验证真随机" desc="真随机数级引擎。集成 Chainlink VRF V2.5 物理级随机源，提供链上可验证的加密证明，确保每一次锦鲤诞生都绝对公平、不可预测。" color="red" />
+                <CardIconBox icon={<ShieldCheck size={20}/>} title="可验证真随机" desc="真随机数引擎。集成 Chainlink VRF V2.5 物理级随机源，提供链上可验证的加密证明，确保每一次锦鲤诞生都绝对公平、不可预测。" color="red" />
               </div>
             </div>
           )}
@@ -795,7 +795,7 @@ const App: React.FC = () => {
                     <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-500 group-hover:scale-110 transition-transform"><Zap size={24}/></div>
                     <h3 className="text-lg font-black text-white uppercase italic">三、社区触发机制</h3>
                     <p className="text-[11px] text-zinc-500 font-bold leading-relaxed">
-                       每 <span className="text-white">{config ? config.lotteryInterval / 60 : '...'} 分钟</span>，只要奖池和 LINK 燃料充足，任何人皆可调用合约触发开奖。触发者将获得 <span className="text-white">Gas 补偿 + 额外 BNB 赏金</span>。这确保了系统在去中心化环境下永续运行。
+                       每 <span className="text-white">{config ? config.lotteryInterval / 60 : '...'} 分钟</span>，只要奖池和 LINK 燃料充足，任何人皆可调用合约触发开奖。触发者将获得 <span className="text-white">Gas 补偿 </span>。这确保了系统在去中心化环境下永续运行。
                     </p>
                  </div>
                  {/* Rule 4 */}
@@ -806,6 +806,81 @@ const App: React.FC = () => {
                        若注册用户的持仓低于最低门槛，任何人均可发起“举报”。被举报者有 <span className="text-white">1 小时</span> 宽限期补足资金。超时未补足，将被移出队列。清理者亦可获得赏金。
                     </p>
                  </div>
+              </div>
+              
+              {/* Maintenance Guide Section */}
+              <div className="mt-8 pt-8 border-t border-white/5">
+                <div className="flex items-center gap-3 mb-6">
+                    <div className="p-3 bg-red-500/10 rounded-xl text-red-500 border border-red-500/20 shadow-[0_0_15px_rgba(239,68,68,0.2)] animate-pulse"><Siren size={24}/></div>
+                    <div>
+                        <h3 className="text-xl font-black text-white uppercase italic">社区自主维护手册</h3>
+                        <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">去中心化协议的应急与保养指南</p>
+                    </div>
+                </div>
+                
+                <div className="space-y-4">
+                    {/* Item 1 */}
+                    <div className="glass-card p-5 rounded-2xl border border-white/5 hover:border-amber-500/30 transition-all group">
+                        <div className="flex items-start gap-4">
+                            <div className="mt-1 p-2 bg-amber-500/10 rounded-lg text-amber-500 shrink-0"><Clock size={18}/></div>
+                            <div className="space-y-2">
+                                <h4 className="text-sm font-black text-white uppercase italic">1. 开奖停滞 (Lottery Stalled)</h4>
+                                <div className="text-[10px] text-zinc-400 font-bold leading-relaxed space-y-1">
+                                    <p><span className="text-zinc-600 uppercase tracking-wider">现象：</span> 超过设定的时间间隔（如 30 分钟）仍未开奖。</p>
+                                    <p><span className="text-zinc-600 uppercase tracking-wider">原因：</span> 无人触发，或 Gas 费波动导致自动脚本暂停。</p>
+                                    <p><span className="text-emerald-500 uppercase tracking-wider">解决方案：</span> 前往 <span className="text-white border-b border-white/20">协议中枢</span>，查看“触发状态”。若显示“系统就绪”，点击 <strong>“手动触发结算”</strong>。</p>
+                                    <p className="text-amber-500/80 italic">★ 触发者将获得 Gas 补偿 。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Item 2 */}
+                    <div className="glass-card p-5 rounded-2xl border border-white/5 hover:border-blue-500/30 transition-all group">
+                        <div className="flex items-start gap-4">
+                            <div className="mt-1 p-2 bg-blue-500/10 rounded-lg text-blue-500 shrink-0"><Fuel size={18}/></div>
+                            <div className="space-y-2">
+                                <h4 className="text-sm font-black text-white uppercase italic">2. 预言机缺油 (Insufficient LINK)</h4>
+                                <div className="text-[10px] text-zinc-400 font-bold leading-relaxed space-y-1">
+                                    <p><span className="text-zinc-600 uppercase tracking-wider">现象：</span> 触发状态提示“LINK 燃料不足”或“灵力告急”。</p>
+                                    <p><span className="text-zinc-600 uppercase tracking-wider">原因：</span> Chainlink VRF 订阅账户中的 LINK 代币耗尽。</p>
+                                    <p><span className="text-emerald-500 uppercase tracking-wider">解决方案：</span> 前往 <span className="text-white border-b border-white/20">协议中枢</span>，点击 <strong>“智能维护 (Maintain LINK)”</strong>。</p>
+                                    <p className="text-zinc-500 italic">合约会自动将部分 BNB 兑换为 LINK，并通过 PegSwap 跨链充值到 VRF 订阅账户。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Item 3 */}
+                    <div className="glass-card p-5 rounded-2xl border border-white/5 hover:border-red-500/30 transition-all group">
+                        <div className="flex items-start gap-4">
+                            <div className="mt-1 p-2 bg-red-500/10 rounded-lg text-red-500 shrink-0"><RotateCcw size={18}/></div>
+                            <div className="space-y-2">
+                                <h4 className="text-sm font-black text-white uppercase italic">3. 抽奖卡死 (Stuck Request)</h4>
+                                <div className="text-[10px] text-zinc-400 font-bold leading-relaxed space-y-1">
+                                    <p><span className="text-zinc-600 uppercase tracking-wider">现象：</span> 状态一直显示“VRF 运算中”，且持续时间超过 1 小时。</p>
+                                    <p><span className="text-zinc-600 uppercase tracking-wider">原因：</span> Chainlink 节点未响应，或回调交易失败。</p>
+                                    <p><span className="text-emerald-500 uppercase tracking-wider">解决方案：</span> 前往 <span className="text-white border-b border-white/20">协议中枢</span>，点击 <strong>“强制重置异常请求”</strong>。</p>
+                                    <p className="text-zinc-500 italic">需等待请求发出 1 小时后方可执行。重置后可立即发起新一轮抽奖。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Item 4 */}
+                    <div className="glass-card p-5 rounded-2xl border border-white/5 hover:border-purple-500/30 transition-all group">
+                        <div className="flex items-start gap-4">
+                            <div className="mt-1 p-2 bg-purple-500/10 rounded-lg text-purple-500 shrink-0"><Trash2 size={18}/></div>
+                            <div className="space-y-2">
+                                <h4 className="text-sm font-black text-white uppercase italic">4. 僵尸户清理 (Cleanup)</h4>
+                                <div className="text-[10px] text-zinc-400 font-bold leading-relaxed space-y-1">
+                                    <p><span className="text-zinc-600 uppercase tracking-wider">现象：</span> 持有者列表包含大量无效用户，导致 Gas 费虚高。</p>
+                                    <p><span className="text-emerald-500 uppercase tracking-wider">解决方案：</span> 前往 <span className="text-white border-b border-white/20">协议中枢</span> 点击 <strong>“批量清理”</strong>；或在 <span className="text-white border-b border-white/20">锦鲤名册</span> 中对单个用户发起 <strong>“举报”</strong>。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
               </div>
             </div>
           )}
