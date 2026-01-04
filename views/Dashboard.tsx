@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Globe, Trophy, TrendingUp, Coins, Users, ShieldCheck, Target, Zap, Waves, AlertCircle, Settings, Clock, Fuel, Sparkles } from 'lucide-react';
+import { Globe, Trophy, TrendingUp, Coins, Users, ShieldCheck, Target, Zap, Waves, AlertCircle, Settings, Clock, Fuel, Sparkles, Gift } from 'lucide-react';
 import { ContractStats, LotteryRecord, TriggerStatus } from '../types';
 import { formatBNBValue, StatusBadge, DigitBox, HeroStat, CardIconBox } from '../components/Shared';
 import { LuckyLogo } from '../components/Logo';
@@ -117,8 +117,12 @@ export const Dashboard: React.FC<DashboardProps> = ({ stats, history, triggerSta
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 pt-8 sm:pt-10 mt-8 sm:mt-10 border-t border-white/5 relative z-10">
+        
+        {/* Updated Grid for 5 items */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-8 pt-8 sm:pt-10 mt-8 sm:mt-10 border-t border-white/5 relative z-10">
           <HeroStat icon={<TrendingUp size={14}/>} label={t('dashboard.stats.totalLotteries')} value={stats?.totalLotteries || 0} />
+          {/* New Stat: Total Distributed */}
+          <HeroStat icon={<Gift size={14}/>} label={t('dashboard.stats.totalDistributed')} value={`${formatBNBValue(stats?.totalRewards || 0)}`} />
           <HeroStat icon={<Coins size={14}/>} label={t('dashboard.stats.contractTotal')} value={`${formatBNBValue(stats?.contractTotal || 0)}`} />
           <HeroStat icon={<Users size={14}/>} label={t('dashboard.stats.holderCount')} value={stats?.holderCount || 0} />
           <HeroStat icon={<ShieldCheck size={14}/>} label={t('dashboard.stats.vrf')} value="VRF V2.5" />

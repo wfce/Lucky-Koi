@@ -10,7 +10,7 @@ export const translations = {
     },
     nav: {
       dashboard: "鸿运看板",
-      history: "历届锦鲤",
+      history: "锦鲤榜",
       rules: "规则说明", // Standard
       holders: "锦鲤名册",
       community: "社区共治", // Standard/Gov
@@ -73,6 +73,7 @@ export const translations = {
       },
       stats: {
         totalLotteries: "已诞锦鲤", // Koi theme
+        totalDistributed: "累计已发福泽", // New Added
         contractTotal: "合约总余额", // Standard
         holderCount: "参与人数", // Standard
         vrf: "Chainlink 真随机"
@@ -332,6 +333,7 @@ export const translations = {
       },
       stats: {
         totalLotteries: "Total Draws",
+        totalDistributed: "Total Rewards", // New Added
         contractTotal: "Contract Balance",
         holderCount: "Active Holders",
         vrf: "True Randomness"
