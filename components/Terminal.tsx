@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Activity, ShieldAlert, Wallet, Search, Sparkles, ArrowRightCircle, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Activity, ShieldAlert, Wallet, Search, Sparkles, ArrowRightCircle, Loader2, CheckCircle2, AlertCircle, AlertTriangle } from 'lucide-react';
 import { UserInfo, ContractConfig } from '../types';
 import { formatTokens } from '../utils';
 import { formatBNBValue } from './Shared';
@@ -64,19 +64,19 @@ export const PersonalTerminal: React.FC<TerminalProps> = ({ account, loading, us
             {!userInfo.currentlyValid && (<div className="text-[8px] text-red-500 font-black uppercase italic text-center bg-red-500/10 p-2 rounded-lg border border-red-500/20">{t('terminal.warning')}</div>)}
           </div>
           {parseFloat(userInfo.pending) > 0 ? (
-             <div className="p-6 bg-emerald-500/10 border border-emerald-500/20 rounded-[2rem] space-y-5 shadow-inner">
-                <div className="space-y-1"><p className="text-emerald-500 text-[9px] font-black uppercase italic">{t('terminal.pendingTitle')}</p><h4 className="text-3xl font-black text-white tabular-nums pr-8 leading-none">{formatBNBValue(userInfo.pending)} <span className="text-xs opacity-50 italic">BNB</span></h4></div>
-                <button onClick={() => onExecute('claimPendingReward')} disabled={loading} className={`w-full py-4 bg-emerald-500 text-white rounded-xl font-black text-[11px] uppercase tracking-[0.2em] italic flex items-center justify-center gap-2 ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-emerald-600 active:scale-95'}`}>{loading ? <Loader2 size={12} className="animate-spin" /> : t('terminal.btnClaim')}</button>
+             <div className="p-6 bg-red-950/20 border border-red-500/30 rounded-[2rem] space-y-5 shadow-inner relative overflow-hidden">
+                <div className="absolute -top-4 -right-4 text-red-500 opacity-20"><AlertTriangle size={80} /></div>
+                <div className="space-y-1 relative z-10"><p className="text-red-500 text-[10px] font-black uppercase italic flex items-center gap-2"><AlertTriangle size={12}/> {t('terminal.pendingTitle')}</p><h4 className="text-3xl font-black text-white tabular-nums pr-8 leading-none">{formatBNBValue(userInfo.pending)} <span className="text-xs opacity-50 italic">BNB</span></h4></div>
+                <button onClick={() => onExecute('claimPendingReward')} disabled={loading} className={`w-full py-4 bg-red-600/20 border border-red-500/50 text-red-500 rounded-xl font-black text-[11px] uppercase tracking-[0.2em] italic flex items-center justify-center gap-2 relative z-10 ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-red-600 hover:text-white hover:border-red-600 active:scale-95 transition-all'}`}>{loading ? <Loader2 size={12} className="animate-spin" /> : t('terminal.btnClaim')}</button>
              </div>
           ) : (
             <div className="p-4 bg-zinc-950 rounded-2xl border border-white/5 text-center shadow-inner"><p className="text-[9px] text-zinc-600 font-black uppercase italic">{t('terminal.waiting')}</p></div>
           )}
           <div className="grid grid-cols-2 gap-3 pt-2">
              <div className="bg-zinc-950 p-4 rounded-2xl border border-white/5 text-center shadow-inner"><p className="text-[8px] text-zinc-600 font-black uppercase mb-1 italic">{t('terminal.winCount')}</p><p className="text-xs font-black text-white">{userInfo.winCount} 次</p></div>
-             <div className="bg-zinc-950 p-4 rounded-2xl border border-white/5 text-center shadow-inner"><p className="text-[8px] text-zinc-600 font-black uppercase mb-1 italic">{t('terminal.gasCollected')}</p><p className="text-xs font-black text-amber-500">{formatBNBValue(userInfo.gasRewardsCollected)}</p></div>
-             <div className="col-span-2 bg-zinc-950 p-3 rounded-2xl border border-white/5 text-center shadow-inner flex items-center justify-between px-6"><p className="text-[8px] text-zinc-600 font-black uppercase italic">{t('terminal.donations')}</p><p className="text-xs font-black text-blue-400">{formatBNBValue(userInfo.donations)}</p></div>
+             <div className="bg-zinc-950 p-4 rounded-2xl border border-white/5 text-center shadow-inner"><p className="text-[8px] text-zinc-600 font-black uppercase mb-1 italic">{t('terminal.totalWon')}</p><p className="text-xs font-black text-amber-500">{formatBNBValue(userInfo.totalWon)}</p></div>
           </div>
-          <button onClick={() => onExecute('unregister')} disabled={loading} className={`w-full text-zinc-800 text-[9px] font-black uppercase tracking-[0.3em] transition-all text-center italic mt-2 flex items-center justify-center gap-2 ${loading ? 'cursor-not-allowed opacity-50' : 'hover:text-red-500 active:scale-95'}`}>{loading && <Loader2 size={10} className="animate-spin" />} {t('terminal.btnUnregister')}</button>
+          <button onClick={() => onExecute('unregister')} disabled={loading} className={`w-full text-zinc-500 text-[9px] font-black uppercase tracking-[0.3em] transition-all text-center italic mt-2 flex items-center justify-center gap-2 ${loading ? 'cursor-not-allowed opacity-50' : 'hover:text-red-500 active:scale-95'}`}>{loading && <Loader2 size={10} className="animate-spin" />} {t('terminal.btnUnregister')}</button>
         </div>
       )}
     </div>

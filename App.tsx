@@ -15,7 +15,7 @@ import { Dashboard } from './views/Dashboard';
 import { Rules } from './views/Rules';
 import { Holders } from './views/Holders';
 import { History } from './views/History';
-import { Admin } from './views/Admin';
+import { Community } from './views/Community';
 import { PersonalTerminal } from './components/Terminal';
 
 const SUPPORTED_WALLETS: WalletProvider[] = [
@@ -34,7 +34,7 @@ const App: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [detectedWallets, setDetectedWallets] = useState<Set<string>>(new Set());
-  const [activeTab, setActiveTab] = useState<'stats' | 'history' | 'rules' | 'holders' | 'admin'>('stats');
+  const [activeTab, setActiveTab] = useState<'stats' | 'history' | 'rules' | 'holders' | 'community'>('stats');
   
   // Data States
   const [stats, setStats] = useState<ContractStats | null>(null);
@@ -224,12 +224,18 @@ const App: React.FC = () => {
         if (latest.requestId !== lastProcessedRequestId.current) {
           lastProcessedRequestId.current = latest.requestId;
           postLotteryCheckCounter.current = 0;
+          
           let mode: 'winner' | 'loser' | 'guest' = 'guest';
           let isWinner = false;
+          
           if (account) { 
               isWinner = latest.winner.toLowerCase() === account.toLowerCase(); 
               mode = isWinner ? 'winner' : 'loser'; 
+          } else {
+              mode = 'guest';
           }
+          
+          // Trigger modal for ALL cases (Winner, Loser, Guest)
           setResultModal({ show: true, mode, isWinner, amount: latest.reward, winnerAddress: latest.winner, txHash: latest.txHash });
         }
       }
@@ -398,7 +404,7 @@ const App: React.FC = () => {
               <NavTab active={activeTab === 'history'} onClick={() => { setActiveTab('history'); setIsMenuOpen(false); }} label={t('nav.history')} icon={<HistoryIcon size={16}/>} isMobile />
               <NavTab active={activeTab === 'rules'} onClick={() => { setActiveTab('rules'); setIsMenuOpen(false); }} label={t('nav.rules')} icon={<FileText size={16}/>} isMobile />
               <NavTab active={activeTab === 'holders'} onClick={() => { setActiveTab('holders'); setIsMenuOpen(false); }} label={t('nav.holders')} icon={<Shield size={16}/>} isMobile />
-              <NavTab active={activeTab === 'admin'} onClick={() => { setActiveTab('admin'); setIsMenuOpen(false); }} label={t('nav.admin')} icon={<Settings size={16}/>} isMobile />
+              <NavTab active={activeTab === 'community'} onClick={() => { setActiveTab('community'); setIsMenuOpen(false); }} label={t('nav.community')} icon={<Settings size={16}/>} isMobile />
           </div>
           <div className="p-6 border-t border-white/5 text-center flex flex-col gap-4">
              <button onClick={toggleLanguage} className="flex items-center justify-center gap-2 p-3 bg-zinc-900 border border-white/5 rounded-xl text-zinc-400 font-bold uppercase hover:text-white hover:bg-zinc-800 transition-all">
@@ -428,7 +434,7 @@ const App: React.FC = () => {
                   <NavTab active={activeTab === 'history'} onClick={() => setActiveTab('history')} label={t('nav.history')} icon={<HistoryIcon size={14}/>} />
                   <NavTab active={activeTab === 'rules'} onClick={() => setActiveTab('rules')} label={t('nav.rules')} icon={<FileText size={14}/>} />
                   <NavTab active={activeTab === 'holders'} onClick={() => setActiveTab('holders')} label={t('nav.holders')} icon={<Shield size={14}/>} />
-                  <NavTab active={activeTab === 'admin'} onClick={() => setActiveTab('admin')} label={t('nav.admin')} icon={<Settings size={14}/>} />
+                  <NavTab active={activeTab === 'community'} onClick={() => setActiveTab('community')} label={t('nav.community')} icon={<Settings size={14}/>} />
                </div>
                
                <button onClick={toggleLanguage} className="hidden lg:flex p-2.5 bg-zinc-900 border border-white/5 rounded-xl text-zinc-500 hover:text-white transition-all shadow-inner active:scale-95" title="Switch Language">
@@ -468,7 +474,7 @@ const App: React.FC = () => {
           {activeTab === 'rules' && <Rules config={config} tokenSymbol={tokenSymbol} tokenDecimals={tokenDecimals} />}
           {activeTab === 'holders' && <Holders stats={stats} config={config} tokenSymbol={tokenSymbol} tokenDecimals={tokenDecimals} holdersData={holdersData} holdersPage={holdersPage} setHoldersPage={setHoldersPage} onExecute={executeTx} />}
           {activeTab === 'history' && <History history={history} historyPage={historyPage} setHistoryPage={setHistoryPage} />}
-          {activeTab === 'admin' && <Admin loading={loading} linkStats={linkStats} gasRewardStats={gasRewardStats} cleanupProgress={cleanupProgress} readOnlyContract={readOnlyContract} onExecute={executeTx} showNotification={showNotification} />}
+          {activeTab === 'community' && <Community loading={loading} linkStats={linkStats} gasRewardStats={gasRewardStats} cleanupProgress={cleanupProgress} readOnlyContract={readOnlyContract} onExecute={executeTx} showNotification={showNotification} />}
         </div>
         <div className="lg:col-span-4 sticky top-24 hidden lg:block">
           <PersonalTerminal account={account} loading={loading} userInfo={userInfo} config={config} tokenSymbol={tokenSymbol} tokenDecimals={tokenDecimals} hasSufficientBalance={hasSufficientBalance} onConnect={() => setIsModalOpen(true)} onExecute={executeTx} />

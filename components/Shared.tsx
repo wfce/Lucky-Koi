@@ -118,8 +118,11 @@ export const Notification: React.FC<{ show: boolean, type: 'error' | 'success' |
 export const ResultModal: React.FC<{ 
   show: boolean, mode: 'winner' | 'loser' | 'guest', isWinner: boolean, amount: string, winnerAddress?: string, txHash?: string, onClose: () => void 
 }> = ({ show, mode, isWinner, amount, winnerAddress, txHash, onClose }) => {
+  const { t } = useLanguage();
   const [timeLeft, setTimeLeft] = useState(15);
   const startTimeRef = useRef<number | null>(null);
+
+  // Auto-close logic for loser and guest only
   useEffect(() => {
     if (!show || mode === 'winner') { 
         startTimeRef.current = null; 
@@ -138,33 +141,35 @@ export const ResultModal: React.FC<{
   }, [show, onClose, mode]);
 
   if (!show) return null;
+
   const content = {
     winner: { 
-        title: '恭喜！锦鲤附体！', 
-        subtitle: '鸿运当头 · 奖金已入账', 
-        desc: 'Chainlink VRF 物理级随机数选中了您的地址！福泽深厚，大吉大利！', 
+        title: t('modal.winnerTitle'), 
+        subtitle: t('modal.winnerSubtitle'), 
+        desc: t('modal.winnerDesc'), 
         icon: <div className="scale-125 relative"><LuckyLogo size={100} /><Sparkles className="absolute -top-4 -right-4 text-yellow-300 animate-pulse" size={30} /><PartyPopper className="absolute -bottom-4 -left-4 text-yellow-300 animate-bounce" size={30} /></div>, 
         theme: 'border-amber-500 bg-gradient-to-b from-red-900/90 to-amber-900/90 shadow-[0_0_100px_rgba(245,158,11,0.4)]' 
     },
     loser: { 
-        title: '结算完毕', 
-        subtitle: '本轮未中奖', 
-        desc: '链上随机数已完成公平选取。只要持仓满足门槛，分红权将永久有效。', 
+        title: t('modal.loserTitle'), 
+        subtitle: t('modal.loserSubtitle'), 
+        desc: t('modal.loserDesc'), 
         icon: <Ghost className="text-zinc-600" size={64} />, 
-        theme: 'border-zinc-800 bg-zinc-950/90' 
+        theme: 'border-zinc-800 bg-zinc-950/95' 
     },
     guest: { 
-        title: '系统速报', 
-        subtitle: '结算已触发', 
-        desc: '协议检测到时间间隔已到，社区成员已唤醒锦鲤并执行派奖（已发放赏金）。', 
+        title: t('modal.guestTitle'), 
+        subtitle: t('modal.guestSubtitle'), 
+        desc: t('modal.guestDesc'), 
         icon: <Sparkles className="text-red-500" size={64} />, 
-        theme: 'border-red-500/20 bg-gradient-to-b from-red-950/80 to-black/90' 
+        theme: 'border-red-500/20 bg-gradient-to-b from-red-950/80 to-black/95' 
     }
   }[mode];
 
   return (
     <div className="fixed inset-0 z-[2000] flex items-center justify-center p-4">
-      {isWinner && (
+      {/* Celebration Effects for Winner */}
+      {mode === 'winner' && (
           <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
               <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-yellow-500 rounded-full animate-ping delay-75"></div>
               <div className="absolute top-1/3 right-1/4 w-3 h-3 bg-red-500 rounded-full animate-ping delay-150"></div>
@@ -172,36 +177,48 @@ export const ResultModal: React.FC<{
               <div className="absolute inset-0 bg-red-500/10 animate-pulse"></div>
           </div>
       )}
-      <div className="absolute inset-0 bg-black/98 backdrop-blur-3xl animate-in fade-in duration-700" onClick={onClose}></div>
+      
+      <div className="absolute inset-0 bg-black/90 backdrop-blur-2xl animate-in fade-in duration-700" onClick={onClose}></div>
+      
       <div className={`relative glass-card w-full max-w-[90vw] sm:max-w-xl rounded-[2.5rem] sm:rounded-[3rem] p-6 sm:p-14 border-2 ${content.theme} text-center space-y-8 sm:space-y-10 animate-in zoom-in-95 duration-500 overflow-hidden shadow-3xl`}>
-        {!isWinner && (
-            <div className="absolute top-0 left-0 w-full h-1.5 bg-white/5">
-                <div className="h-full bg-red-500 transition-all duration-100 ease-linear" style={{ width: `${(timeLeft / 15) * 100}%` }}></div>
+        {/* Progress Bar for Auto-Close Modes */}
+        {mode !== 'winner' && (
+            <div className="absolute top-0 left-0 w-full h-1 bg-white/5">
+                <div className="h-full bg-red-500/50 transition-all duration-100 ease-linear" style={{ width: `${(timeLeft / 15) * 100}%` }}></div>
             </div>
         )}
+
         <div className="space-y-6 pt-4 relative z-10">
-          <div className={`w-24 h-24 sm:w-32 sm:h-32 rounded-[2.5rem] flex items-center justify-center mx-auto shadow-2xl relative overflow-visible ${isWinner ? 'bg-gradient-to-br from-amber-500/20 to-red-600/20 border border-amber-500/50' : 'bg-zinc-900 border border-white/10 overflow-hidden'}`}>
+          <div className={`w-24 h-24 sm:w-32 sm:h-32 rounded-[2.5rem] flex items-center justify-center mx-auto shadow-2xl relative overflow-visible ${mode === 'winner' ? 'bg-gradient-to-br from-amber-500/20 to-red-600/20 border border-amber-500/50' : 'bg-zinc-900 border border-white/10 overflow-hidden'}`}>
             {content.icon}
-            {isWinner && <div className="absolute inset-0 bg-amber-500/10 rounded-[2.5rem] animate-ping pointer-events-none duration-1000"></div>}
+            {mode === 'winner' && <div className="absolute inset-0 bg-amber-500/10 rounded-[2.5rem] animate-ping pointer-events-none duration-1000"></div>}
           </div>
+          
           <div className="space-y-2">
-            <h2 className={`text-3xl sm:text-5xl font-black italic uppercase pr-4 leading-tight ${isWinner ? 'text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-yellow-500' : 'text-white'}`}>{content.title}</h2>
-            <p className={`${isWinner ? 'text-amber-300' : 'text-red-500'} text-[11px] font-black uppercase tracking-[0.5em] italic pr-4`}>{content.subtitle}</p>
+            <h2 className={`text-3xl sm:text-5xl font-black italic uppercase pr-4 leading-tight ${mode === 'winner' ? 'text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-yellow-500' : 'text-white'}`}>{content.title}</h2>
+            <p className={`${mode === 'winner' ? 'text-amber-300' : 'text-red-500'} text-[11px] font-black uppercase tracking-[0.5em] italic pr-4`}>{content.subtitle}</p>
           </div>
-          <div className={`p-6 rounded-[2.5rem] border space-y-6 shadow-inner ${isWinner ? 'bg-gradient-to-br from-red-950/50 to-amber-900/30 border-amber-500/30' : 'bg-black/80 border-white/5'}`}>
+          
+          <div className={`p-6 rounded-[2.5rem] border space-y-6 shadow-inner ${mode === 'winner' ? 'bg-gradient-to-br from-red-950/50 to-amber-900/30 border-amber-500/30' : 'bg-black/80 border-white/5'}`}>
             <div className="space-y-1">
-              <span className={`text-[9px] font-black uppercase italic pr-4 ${isWinner ? 'text-amber-500' : 'text-zinc-600'}`}>{isWinner ? '您的收益' : '获胜锦鲤地址'}</span>
-              <p className={`text-xs font-mono font-bold break-all select-all ${isWinner ? 'text-amber-200' : 'text-zinc-300'}`}>{isWinner ? '奖金已自动转入钱包' : winnerAddress}</p>
+              <span className={`text-[9px] font-black uppercase italic pr-4 ${mode === 'winner' ? 'text-amber-500' : 'text-zinc-600'}`}>{mode === 'winner' ? t('modal.winnerSent') : t('modal.targetAddr')}</span>
+              <p className={`text-xs font-mono font-bold break-all select-all ${mode === 'winner' ? 'text-amber-200' : 'text-zinc-300'}`}>{mode === 'winner' ? t('modal.winnerSent') : winnerAddress}</p>
             </div>
+            
             <div className="text-4xl sm:text-6xl font-black text-white stat-glow tabular-nums tracking-tighter leading-none">
-              {formatBNBValue(amount)} <span className={`text-base sm:text-xl uppercase italic pr-2 ${isWinner ? 'text-amber-500' : 'accent-gradient'}`}>BNB</span>
+              {formatBNBValue(amount)} <span className={`text-base sm:text-xl uppercase italic pr-2 ${mode === 'winner' ? 'text-amber-500' : 'accent-gradient'}`}>BNB</span>
             </div>
+            
             {txHash && (
-              <a href={`https://bscscan.com/tx/${txHash}`} target="_blank" rel="noreferrer" className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-[9px] font-black uppercase italic tracking-widest transition-all ${isWinner ? 'bg-amber-500/10 border border-amber-500/30 text-amber-500 hover:bg-amber-500/20' : 'bg-zinc-900/50 border border-white/5 text-zinc-500 hover:text-red-400'}`}><Eye size={12} /> 查看链上凭证</a>
+              <a href={`https://bscscan.com/tx/${txHash}`} target="_blank" rel="noreferrer" className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-[9px] font-black uppercase italic tracking-widest transition-all ${mode === 'winner' ? 'bg-amber-500/10 border border-amber-500/30 text-amber-500 hover:bg-amber-500/20' : 'bg-zinc-900/50 border border-white/5 text-zinc-500 hover:text-red-400'}`}><Eye size={12} /> {t('modal.viewProof')}</a>
             )}
           </div>
-          <p className={`${isWinner ? 'text-amber-500/60' : 'text-zinc-500'} text-[10px] leading-relaxed font-bold uppercase italic pr-4`}>{content.desc}</p>
-          <button onClick={onClose} className={`w-full py-5 rounded-[2rem] font-black uppercase italic active:scale-95 transition-all shadow-xl ${isWinner ? 'bg-gradient-to-r from-amber-500 to-red-600 text-white shadow-red-500/30 hover:shadow-red-500/50' : 'action-button'}`}>确定</button>
+          
+          <p className={`${mode === 'winner' ? 'text-amber-500/60' : 'text-zinc-500'} text-[10px] leading-relaxed font-bold uppercase italic pr-4`}>{content.desc}</p>
+          
+          <button onClick={onClose} className={`w-full py-5 rounded-[2rem] font-black uppercase italic active:scale-95 transition-all shadow-xl ${mode === 'winner' ? 'bg-gradient-to-r from-amber-500 to-red-600 text-white shadow-red-500/30 hover:shadow-red-500/50' : 'action-button'}`}>
+            {t('modal.close')} {mode !== 'winner' && `(${Math.ceil(timeLeft)}s)`}
+          </button>
         </div>
       </div>
     </div>
@@ -267,7 +284,7 @@ export const CardIconBox: React.FC<{ icon: React.ReactNode, title: string, desc:
   );
 };
 
-export const AdminSection: React.FC<{ 
+export const GovernanceSection: React.FC<{ 
   title: string, 
   stats: { label: string, value: string | number }[], 
   actions: { label: string, method: string, args?: any[] }[],
