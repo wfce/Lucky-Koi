@@ -6,22 +6,24 @@ export const translations = {
       subtitle: "Lucky Koi Protocol",
       desc: "Chainlink VRF 驱动的去中心化锦鲤协议",
       copyright: "© 2026 JINLI.LOL",
-      network: "BNB Chain"
+      network: "BNB Chain",
+      syncing: "锦鲤纳福，瑞气集结中...",
+      syncingDesc: "正在连通链上福泽池，静候鸿运当头"
     },
     nav: {
       dashboard: "鸿运看板",
       history: "锦鲤榜",
-      rules: "规则说明", // Standard
+      rules: "规则说明",
       holders: "锦鲤名册",
-      community: "社区共治", // Standard/Gov
+      community: "社区共治",
       menu: "菜单",
       version: "幸运锦鲤 v1.0",
-      connect: "连接钱包", // Standard
-      connected: "已连接",
+      connect: "激活福泽",
+      connected: "已激活",
       disconnect: "断开连接"
     },
     wallet: {
-      title: "连接钱包", // Standard
+      title: "激活福泽身份",
       desc: "请选择您的 Web3 钱包。手机用户请尝试使用“通用钱包 (Generic Wallet)”连接。",
       currentNetwork: "当前网络：BNB Chain",
       notInstalled: "未检测到",
@@ -40,55 +42,55 @@ export const translations = {
       copySuccess: "复制成功"
     },
     dashboard: {
-      poolTitle: "当前锦鲤福泽池", // Koi theme
-      poolDesc: "待赐福泽 (BNB)", // Koi theme
-      latestWinner: "最新锦鲤", // Koi theme
-      countdown: "下轮开奖倒计时", // Standard
+      poolTitle: "当前锦鲤福泽池",
+      poolDesc: "待赐福泽 (BNB)",
+      latestWinner: "最新锦鲤",
+      countdown: "下轮开奖倒计时",
       hour: "时",
       minute: "分",
       second: "秒",
       status: {
-        ready: "系统就绪 (可唤醒)", // Standard + Koi Action
-        computing: "锦鲤甄选中...", // Koi theme
-        cooldown: "冷却期", // Standard
-        noFuel: "燃料不足", // Standard
-        poolSmall: "奖池累积中", // Standard
-        noHolders: "暂无参与者" // Standard
+        ready: "系统就绪 (可唤醒)",
+        computing: "锦鲤甄选中...",
+        cooldown: "冷却期",
+        noFuel: "燃料不足",
+        poolSmall: "奖池累积中",
+        noHolders: "暂无参与者"
       },
       card: {
-        processing: "锦鲤跃龙门", // Koi theme
+        processing: "锦鲤跃龙门",
         processingDesc: "链上真随机甄选中...",
-        ready: "鸿运当头", // Koi theme
+        ready: "鸿运当头",
         readyDesc: "点击唤醒锦鲤...",
         tokenNotSet: "尚未初始化",
         tokenNotSetDesc: "等待配置代币...",
-        poolSmall: "福泽汇聚", // Koi theme
+        poolSmall: "福泽汇聚",
         poolSmallDesc: "等待奖金累积...",
         noHolders: "虚位以待",
         noHoldersDesc: "等待首位参与者...",
-        noFuel: "燃料告急", // Standard
+        noFuel: "燃料告急",
         noFuelDesc: "需补充预言机 LINK",
-        cooldown: "等待下一轮", // Standard
+        cooldown: "等待下一轮",
         cooldownDesc: "冷却时间结束后可唤醒..."
       },
       stats: {
-        totalLotteries: "已诞锦鲤", // Koi theme
-        totalDistributed: "累计已发福泽", // New Added
-        contractTotal: "合约总余额", // Standard
-        holderCount: "参与人数", // Standard
+        totalLotteries: "已诞锦鲤",
+        totalDistributed: "累计已发福泽",
+        contractTotal: "合约总余额",
+        holderCount: "参与人数",
         vrf: "Chainlink 真随机"
       },
       features: {
-        f1Title: "持仓即跃龙门", // Koi theme
+        f1Title: "持仓即跃龙门",
         f1Desc: "无需购票。持有 10,000 $锦鲤 并激活身份，即可永久自动参与每一轮福泽分配。币在手中，运在身上。",
-        f2Title: "社区唤醒机制", // Koi theme
+        f2Title: "社区唤醒机制",
         f2Desc: "去中心化运行。任何人均可“唤醒”锦鲤触发开奖。唤醒者将获得 Gas 费补偿及额外的 BNB 赏金福报。",
-        f3Title: "物理真随机", // Standard
+        f3Title: "物理真随机",
         f3Desc: "拒绝黑箱。集成 Chainlink VRF V2.5 物理级随机源，链上可查，确保每一条锦鲤的诞生都是天意所属。"
       }
     },
     rules: {
-      title: "协议规则", // Standard
+      title: "协议规则",
       desc: "Lucky Koi 是一套运行在区块链上的自动化智能合约系统。规则自动执行，公开透明，童叟无欺。",
       r1Title: "一、持仓入局",
       r1Desc: "无需买票。钱包持有 {min} {symbol} 并完成链上“激活”，即可永久获得抽奖资格。转出代币导致余额不足会自动失去资格。",
@@ -136,8 +138,8 @@ export const translations = {
     },
     history: {
       title: "历代锦鲤榜 (近 5000 区块)",
-      wallet: "获选锦鲤", // Koi theme
-      reward: "获赐福泽", // Koi theme
+      wallet: "获选锦鲤",
+      reward: "获赐福泽",
       weight: "持仓权重",
       proof: "链上凭证",
       loading: "历史记录读取中...",
@@ -146,7 +148,7 @@ export const translations = {
     community: {
       oracleTitle: "Chainlink 预言机状态",
       hunterTitle: "唤醒者悬赏榜",
-      recycleTitle: "遗落福泽回收", // Koi theme context
+      recycleTitle: "遗落福泽回收",
       searchPlaceholder: "输入钱包地址查询...",
       pendingAmount: "滞留金额",
       timeGenerated: "产生时间",
@@ -160,7 +162,7 @@ export const translations = {
         maintain: "补充燃料 (Swap/TopUp)",
         unwrap: "解包奖池 (Unwrap WBNB)",
         convert: "转换 LINK (PegSwap)",
-        trigger: "唤醒锦鲤 (赚取赏金)", // Koi theme
+        trigger: "唤醒锦鲤 (赚取赏金)",
         cleanup: "批量清理无效户",
         reset: "重置卡死请求"
       }
@@ -175,7 +177,7 @@ export const translations = {
       check1Desc: "扫描余额",
       check2: "激活资格",
       check2Desc: "链上注册",
-      btnConnect: "连接并激活",
+      btnConnect: "激活福泽身份",
       detectTitle: "资格检测",
       ready: "符合条件",
       insufficient: "持仓不足",
@@ -183,15 +185,15 @@ export const translations = {
       btnRegister: "立即激活",
       btnRegisterDisable: "持仓不足无法激活",
       realtime: "实时余额",
-      weightTitle: "福泽权重", // Koi theme
+      weightTitle: "福泽权重",
       weightActive: "生效中",
       weightInvalid: "已失效",
       warning: "警告：持仓低于标准，面临被移出风险",
-      pendingTitle: "⚠️ 遗落福泽 (自动转账失败)", // Error state
-      btnClaim: "手动补领", // Standard
-      waiting: "静待锦鲤跃龙门...", // Koi theme
+      pendingTitle: "⚠️ 遗落福泽 (自动转账失败)",
+      btnClaim: "手动补领",
+      waiting: "静待锦鲤跃龙门...",
       winCount: "中奖次数",
-      totalWon: "累计福泽", // Koi theme
+      totalWon: "累计福泽",
       donations: "捐赠",
       btnUnregister: "注销/退出"
     },
@@ -266,7 +268,9 @@ export const translations = {
       subtitle: "Lucky Koi Protocol",
       desc: "World's First Chainlink VRF Driven Luck Protocol | Hold to Win",
       copyright: "© 2026 JINLI.LOL",
-      network: "BNB Chain"
+      network: "BNB Chain",
+      syncing: "Summoning Lucky Koi...",
+      syncingDesc: "Connecting to on-chain fortune pool. Good luck is approaching."
     },
     nav: {
       dashboard: "Dashboard",
@@ -276,12 +280,12 @@ export const translations = {
       community: "Governance",
       menu: "Menu",
       version: "Lucky Koi v1.0",
-      connect: "Connect",
-      connected: "Connected",
+      connect: "Activate Fortune",
+      connected: "Active",
       disconnect: "Disconnect"
     },
     wallet: {
-      title: "Connect Wallet",
+      title: "Activate Fortune",
       desc: "Choose your wallet application. Try 'Generic Wallet' for mobile or unlisted wallets.",
       currentNetwork: "Network: BNB Chain",
       notInstalled: "Not Installed",
@@ -333,7 +337,7 @@ export const translations = {
       },
       stats: {
         totalLotteries: "Total Draws",
-        totalDistributed: "Total Rewards", // New Added
+        totalDistributed: "Total Rewards",
         contractTotal: "Contract Balance",
         holderCount: "Active Holders",
         vrf: "True Randomness"
@@ -435,7 +439,7 @@ export const translations = {
       check1Desc: "Scan Balance",
       check2: "Register",
       check2Desc: "Get Entry",
-      btnConnect: "Connect & Register",
+      btnConnect: "Activate Fortune identity",
       detectTitle: "Eligibility Check",
       ready: "Eligible",
       insufficient: "Insufficient",

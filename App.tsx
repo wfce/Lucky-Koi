@@ -1,13 +1,12 @@
-
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { LayoutDashboard, History as HistoryIcon, FileText, Shield, Settings, Power, Loader2, Menu, X, Github, Twitter, Send, Globe, ShieldCheck } from 'lucide-react';
+import { LayoutDashboard, History as HistoryIcon, FileText, Shield, Settings, Power, Loader2, Menu, X, Github, Twitter, Send, Globe, ShieldCheck, Waves } from 'lucide-react';
 import { ethers } from 'ethers';
 import { LUCKY_LOTTERY_ABI, ERC20_ABI } from './abi';
 import { ContractStats, UserInfo, ContractConfig, LinkStats, GasRewardStats, TriggerStatus, LotteryRecord, WalletProvider, HolderData } from './types';
 import { NavTab, AddressBox, Notification, ResultModal, WalletButton } from './components/Shared';
 import { LuckyLogo } from './components/Logo';
 import { MetaMaskIcon, OKXIcon, BinanceIcon, TrustWalletIcon, TokenPocketIcon, GenericWalletIcon } from './components/WalletIcons';
-import { CONTRACT_ADDRESS, BSC_RPC, CHAIN_ID, PAGE_SIZE, STORAGE_KEY } from './constants';
+import { CONTRACT_ADDRESS, BSC_RPC, CHAIN_ID, PAGE_SIZE, STORAGE_KEY, HISTORY_BLOCK_RANGE } from './constants';
 import { parseRpcError } from './utils';
 import { useLanguage } from './contexts/LanguageContext';
 
@@ -38,6 +37,7 @@ const App: React.FC = () => {
   
   // Data States
   const [stats, setStats] = useState<ContractStats | null>(null);
+  const [isSyncingInitial, setIsSyncingInitial] = useState<boolean>(true);
   const [linkStats, setLinkStats] = useState<LinkStats | null>(null);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [config, setConfig] = useState<ContractConfig | null>(null);
@@ -60,8 +60,13 @@ const App: React.FC = () => {
   const previousInProgress = useRef<boolean>(false);
   const isInitialLoad = useRef<boolean>(true);
   const postLotteryCheckCounter = useRef<number>(0); 
-  const currentTimeRef = useRef<number>(Math.floor(Date.now() / 1000));
+  
+  const isFetchingDataRef = useRef<boolean>(false);
+  const lastDataFetchTimeRef = useRef<number>(0);
+  const isFetchingHistoryRef = useRef<boolean>(false);
+  const lastHistoryFetchTimeRef = useRef<number>(0);
 
+  // Optimization: Explicitly set network name to 'binance' to avoid extra network detection calls
   const readOnlyProvider = useMemo(() => new ethers.JsonRpcProvider(BSC_RPC, { chainId: 56, name: 'binance' }), []);
   const readOnlyContract = useMemo(() => new ethers.Contract(CONTRACT_ADDRESS, LUCKY_LOTTERY_ABI, readOnlyProvider), [readOnlyProvider]);
 
@@ -70,11 +75,6 @@ const App: React.FC = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [activeTab]);
-
-  useEffect(() => {
-    const timer = setInterval(() => { currentTimeRef.current = Math.floor(Date.now() / 1000); }, 1000);
-    return () => clearInterval(timer);
-  }, []);
 
   const hasSufficientBalance = useMemo(() => {
     if (!userInfo || !config) return false;
@@ -200,9 +200,16 @@ const App: React.FC = () => {
   }, []);
 
   const fetchHistoryAndDetectWinner = useCallback(async () => {
+    const now = Date.now();
+    if (isFetchingHistoryRef.current || (now - lastHistoryFetchTimeRef.current < 1000)) return;
+    
+    isFetchingHistoryRef.current = true;
+    lastHistoryFetchTimeRef.current = now;
+    
     try {
       const filter = readOnlyContract.filters.WinnerSelected();
-      const events = await readOnlyContract.queryFilter(filter, -4900); 
+      // Use the optimized HISTORY_BLOCK_RANGE constant (7200 blocks / ~6 hours)
+      const events = await readOnlyContract.queryFilter(filter, -HISTORY_BLOCK_RANGE); 
       const records: LotteryRecord[] = events.map((event: any) => ({
         requestId: event.args[0].toString(),
         winner: event.args[1],
@@ -235,14 +242,20 @@ const App: React.FC = () => {
               mode = 'guest';
           }
           
-          // Trigger modal for ALL cases (Winner, Loser, Guest)
           setResultModal({ show: true, mode, isWinner, amount: latest.reward, winnerAddress: latest.winner, txHash: latest.txHash });
         }
       }
     } catch (err) { console.error("Fetch history error:", err); }
+    finally { isFetchingHistoryRef.current = false; }
   }, [readOnlyContract, account]);
 
   const fetchData = useCallback(async () => {
+    const now = Date.now();
+    if (isFetchingDataRef.current || (now - lastDataFetchTimeRef.current < 1000)) return;
+    
+    isFetchingDataRef.current = true;
+    lastDataFetchTimeRef.current = now;
+    
     try {
       const c = await readOnlyContract.getConfig().catch((e: any) => { throw e; });
       const currentConfig = {
@@ -282,6 +295,8 @@ const App: React.FC = () => {
         inProgress: s.inProg, contractTotal: ethers.formatEther(rawBalance)
       });
       
+      setIsSyncingInitial(false);
+
       setTriggerStatus(Number(trigStatusDetails.status));
       setGasRewardStats({
         totalPaid: ethers.formatEther(gasRewards.total), currentBounty: ethers.formatEther(gasRewards.current),
@@ -323,7 +338,7 @@ const App: React.FC = () => {
             if (!uInfo.valid) {
                try {
                    const filter = readOnlyContract.filters.InvalidMarked(addr);
-                   const events = await readOnlyContract.queryFilter(filter, -4900); 
+                   const events = await readOnlyContract.queryFilter(filter, -HISTORY_BLOCK_RANGE); 
                    if (events.length > 0) graceEnd = Number((events[events.length - 1] as any).args[1]);
                } catch(e) {}
             }
@@ -332,28 +347,43 @@ const App: React.FC = () => {
         }));
         setHoldersData(holdersWithDetails);
       }
-    } catch (err) { console.error("Fetch data error:", err); }
+    } catch (err) { 
+      console.error("Fetch data error:", err);
+      // Even if it fails, we should stop syncing initial so the user isn't stuck forever.
+      setIsSyncingInitial(false);
+    }
+    finally { isFetchingDataRef.current = false; }
   }, [readOnlyContract, readOnlyProvider, account, holdersPage, fetchHistoryAndDetectWinner]);
 
+  // 主轮询：保持 1 秒间隔
   useEffect(() => {
-    fetchData(); fetchHistoryAndDetectWinner();
-    const isFastPolling = stats?.inProgress || countdown.isZero || postLotteryCheckCounter.current > 0;
+    fetchData(); 
+    fetchHistoryAndDetectWinner();
+    
     const poll = setInterval(() => {
         fetchData();
+        fetchHistoryAndDetectWinner();
+        
         if (postLotteryCheckCounter.current > 0) {
             postLotteryCheckCounter.current -= 1;
-            fetchHistoryAndDetectWinner();
         }
-    }, isFastPolling ? 2000 : 15000);
-    return () => clearInterval(poll);
-  }, [fetchData, fetchHistoryAndDetectWinner, stats?.inProgress, countdown.isZero]);
+    }, 1000);
 
+    return () => clearInterval(poll);
+  }, [fetchData, fetchHistoryAndDetectWinner]);
+
+  // 倒计时计时器
   useEffect(() => {
     if (!stats) return;
     const timer = setInterval(() => {
       const now = Math.floor(Date.now() / 1000);
       const diff = Math.max(0, stats.nextLotteryTime - now);
-      setCountdown({ h: Math.floor(diff / 3600).toString().padStart(2, '0'), m: Math.floor((diff % 3600) / 60).toString().padStart(2, '0'), s: (diff % 60).toString().padStart(2, '0'), isZero: diff === 0 });
+      setCountdown({ 
+        h: Math.floor(diff / 3600).toString().padStart(2, '0'), 
+        m: Math.floor((diff % 3600) / 60).toString().padStart(2, '0'), 
+        s: (diff % 60).toString().padStart(2, '0'), 
+        isZero: diff === 0 
+      });
     }, 1000);
     return () => clearInterval(timer);
   }, [stats]);
@@ -368,9 +398,13 @@ const App: React.FC = () => {
       const signedContract = new ethers.Contract(CONTRACT_ADDRESS, LUCKY_LOTTERY_ABI, signer);
       const tx = await signedContract[method](...args);
       showNotification('info', t('tx.processing'), t('tx.processingDesc'));
-      await tx.wait(); fetchData();
+      await tx.wait(); 
+      fetchData();
       showNotification('success', t('tx.success'), t('tx.successDesc'));
-    } catch (err: any) { const parsed = parseRpcError(err, t); showNotification('error', parsed.title, parsed.message); } finally { setLoading(false); }
+    } catch (err: any) { 
+        const parsed = parseRpcError(err, t); 
+        showNotification('error', parsed.title, parsed.message); 
+    } finally { setLoading(false); }
   };
 
   const sortedWallets = useMemo(() => {
@@ -393,6 +427,48 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen pb-20 overflow-x-hidden">
+      {isSyncingInitial && (
+        <div className="fixed inset-0 z-[5000] flex flex-col items-center justify-center bg-[#050507]">
+           {/* Background Ambience */}
+           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(239,68,68,0.15)_0%,rgba(0,0,0,0)_70%)] pointer-events-none" />
+           
+           {/* Central visual */}
+           <div className="relative flex flex-col items-center justify-center p-12">
+              {/* The Glow */}
+              <div className="absolute inset-0 bg-amber-500/10 blur-[80px] rounded-full animate-pulse" />
+              
+              {/* The Logo - Removed the boxy border, made it float */}
+              <div className="relative z-10 animate-[float_6s_ease-in-out_infinite]">
+                 <LuckyLogo size={140} />
+              </div>
+
+              {/* Loading Ring - Made it surround the logo or sit below subtle */}
+              <div className="absolute inset-0 border-2 border-amber-500/20 rounded-full animate-[spin_10s_linear_infinite] scale-150 opacity-20 border-t-transparent border-l-transparent" />
+              <div className="absolute inset-0 border-2 border-red-500/20 rounded-full animate-[spin_15s_linear_infinite_reverse] scale-[1.8] opacity-10 border-b-transparent border-r-transparent" />
+           </div>
+
+           {/* Text Section */}
+           <div className="relative z-10 text-center space-y-4 mt-8">
+              <h2 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-yellow-400 to-amber-600 uppercase italic tracking-widest animate-pulse">
+                 {t('app.syncing')}
+              </h2>
+              <div className="flex items-center gap-2 justify-center text-red-500/80 text-[10px] font-bold uppercase tracking-[0.4em]">
+                 <Waves size={12} className="animate-bounce" />
+                 <span>{t('app.syncingDesc')}</span>
+                 <Waves size={12} className="animate-bounce delay-100" />
+              </div>
+           </div>
+           
+           {/* Style for float animation */}
+           <style>{`
+             @keyframes float {
+               0%, 100% { transform: translateY(0); }
+               50% { transform: translateY(-15px); }
+             }
+           `}</style>
+        </div>
+      )}
+
       <Notification show={notification.show} type={notification.type} title={notification.title} message={notification.message} onClose={() => setNotification(p => ({...p, show: false}))} />
       <ResultModal show={resultModal.show} mode={resultModal.mode} isWinner={resultModal.isWinner} amount={resultModal.amount} winnerAddress={resultModal.winnerAddress} txHash={resultModal.txHash} onClose={() => setResultModal(p => ({...p, show: false}))} />
 

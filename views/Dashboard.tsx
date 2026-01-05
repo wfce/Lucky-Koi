@@ -91,18 +91,29 @@ export const Dashboard: React.FC<DashboardProps> = ({ stats, history, triggerSta
                 </h1>
                 <span className="text-base sm:text-xl font-black text-amber-500 uppercase italic pr-2">BNB</span>
               </div>
-              {history.length > 0 && (
-                <div className="pt-2 sm:pt-3 flex flex-col md:flex-row items-center justify-center md:justify-start gap-3 animate-in fade-in slide-in-from-bottom-2">
-                   <div className="flex items-center gap-2 px-3 py-1.5 bg-zinc-900/50 border border-white/5 rounded-lg shadow-inner">
-                      <Trophy size={12} className="text-amber-500" />
-                      <span className="text-[9px] font-black text-zinc-500 uppercase italic tracking-wider">{t('dashboard.latestWinner')}</span>
+              
+              {/* Latest Winner Section */}
+              <div className="min-h-[32px] pt-2 sm:pt-3 flex flex-col md:flex-row items-center justify-center md:justify-start gap-3 animate-in fade-in slide-in-from-bottom-2">
+                 {history.length > 0 ? (
+                   <>
+                     <div className="flex items-center gap-2 px-3 py-1.5 bg-amber-500/10 border border-amber-500/20 rounded-lg shadow-[0_0_15px_rgba(245,158,11,0.15)] group hover:bg-amber-500/20 transition-colors cursor-default">
+                        <Trophy size={13} className="text-amber-500" />
+                        <span className="text-[10px] font-black text-amber-500 uppercase italic tracking-wider">{t('dashboard.latestWinner')}</span>
+                     </div>
+                     <div className="flex items-center gap-2.5">
+                        <span className="text-xs font-mono font-bold text-zinc-200 border-b border-white/10 border-dashed pb-0.5">{history[0].winner.slice(0, 6)}...{history[0].winner.slice(-4)}</span>
+                        <span className="text-[10px] font-black text-black bg-gradient-to-r from-amber-400 to-yellow-500 px-2 py-0.5 rounded shadow-[0_2px_10px_rgba(245,158,11,0.3)] tabular-nums flex items-center gap-1">
+                          <Gift size={10} className="text-black/80"/> +{formatBNBValue(history[0].reward)}
+                        </span>
+                     </div>
+                   </>
+                 ) : (
+                   <div className="flex items-center gap-2 opacity-50 select-none">
+                      <Sparkles size={12} className="text-zinc-500" />
+                      <span className="text-[10px] font-bold text-zinc-600 uppercase italic tracking-wider">{t('dashboard.card.noHoldersDesc')}</span>
                    </div>
-                   <div className="flex items-center gap-2">
-                      <span className="text-[11px] font-mono font-bold text-zinc-300">{history[0].winner.slice(0, 6)}...{history[0].winner.slice(-4)}</span>
-                      <span className="text-[10px] font-black text-emerald-500 bg-emerald-500/10 px-2 py-1 rounded border border-emerald-500/20 tabular-nums shadow-[0_0_10px_rgba(16,185,129,0.2)]">+{formatBNBValue(history[0].reward)} BNB</span>
-                   </div>
-                </div>
-              )}
+                 )}
+              </div>
             </div>
           </div>
           <div className="flip-container w-full md:w-[320px] h-[180px] sm:h-[200px] mb-4 sm:mb-0">
