@@ -65,10 +65,10 @@ async function fetchMarketcapUSD(tokenAddress: string): Promise<number> {
   let marketcap = parseFloat(coin.marketcap || "0");
   if (!marketcap) throw new Error("marketcap为空");
 
-  // 如果 quoteToken 不是 USD，需要换算
+  // 如果 quoteToken 不是 BNB，需要换算
   const quoteToken = coin.quoteToken?.toLowerCase();
   if (quoteToken !== "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c") { // WBNB
-    console.log("⚠️ 代币报价非USD，当前使用原始市值数值");
+    console.log("⚠️ 代币报价非BNB，当前使用原始市值数值");
   }
 
   return marketcap;
