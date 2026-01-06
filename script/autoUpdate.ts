@@ -30,7 +30,7 @@ const ERC20ABI = [
 
 // ================= 阈值 =================
 const thresholds = [10_000, 20_000, 50_000, 100_000, 200_000, 500_000, 1_000_000];
-const MIN_HOLDINGS = [1_500_000, 750_000, 375_000, 187_500, 100_000, 75_000, 50_000];
+const MIN_HOLDINGS = [1_500_000, 750_000, 300_000, 150_000, 75_000, 30_000, 15_000];
 const FULL_HOLDINGS = [10_000_000, 10_000_000, 5_000_000, 5_000_000, 5_000_000, 5_000_000, 5_000_000];
 
 function calcHoldingByThresholds(marketcap: number): { minHolding: number; fullHolding: number } {
