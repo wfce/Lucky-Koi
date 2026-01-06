@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { FileText, Scale, Wallet, Dna, Zap, Gavel, Siren, Clock, Fuel, RotateCcw, Trash2 } from 'lucide-react';
+import { FileText, Scale, Wallet, Dna, Zap, Gavel, Siren, Clock, Fuel, RotateCcw, Trash2, Globe, Github } from 'lucide-react';
 import { ContractConfig } from '../types';
 import { formatTokens } from '../utils';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -22,9 +22,13 @@ export const Rules: React.FC<RulesProps> = ({ config, tokenSymbol, tokenDecimals
          <p className="mt-4 text-zinc-400 text-xs font-bold leading-relaxed max-w-2xl relative z-10">
             {t('rules.desc')}
          </p>
+         <div className="mt-4 flex items-center gap-3 relative z-10">
+            <span className="px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-[9px] font-black uppercase italic rounded-full">No Backend</span>
+            <span className="px-3 py-1 bg-red-500/10 border border-red-500/20 text-red-500 text-[9px] font-black uppercase italic rounded-full">100% On-Chain</span>
+         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
          {/* Rule 1 */}
          <div className="p-6 bg-zinc-950/50 border border-white/5 rounded-2xl space-y-4 shadow-inner hover:border-red-500/30 transition-colors group">
             <div className="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center text-red-500 group-hover:scale-110 transition-transform"><Wallet size={24}/></div>
@@ -56,6 +60,17 @@ export const Rules: React.FC<RulesProps> = ({ config, tokenSymbol, tokenDecimals
             <p className="text-[11px] text-zinc-500 font-bold leading-relaxed">
                {t('rules.r4Desc')}
             </p>
+         </div>
+         {/* Rule 5 - OSS & Decentralization */}
+         <div className="p-6 bg-zinc-950/50 border border-white/5 rounded-2xl space-y-4 shadow-inner hover:border-sky-500/30 transition-colors group md:col-span-2 lg:col-span-1">
+            <div className="w-12 h-12 rounded-xl bg-sky-500/10 flex items-center justify-center text-sky-500 group-hover:scale-110 transition-transform"><Globe size={24}/></div>
+            <h3 className="text-lg font-black text-white uppercase italic">{t('rules.r5Title')}</h3>
+            <p className="text-[11px] text-zinc-500 font-bold leading-relaxed">
+               {t('rules.r5Desc')}
+            </p>
+            <div className="pt-2 flex items-center gap-3">
+               <a href="https://github.com/wfce/Lucky-Koi" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-[9px] font-black uppercase italic text-sky-400 hover:text-white transition-colors"><Github size={12}/> View Source</a>
+            </div>
          </div>
       </div>
       
