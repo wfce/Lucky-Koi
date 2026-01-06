@@ -23,13 +23,13 @@ export const Rules: React.FC<RulesProps> = ({ config, tokenSymbol, tokenDecimals
          </p>
          <div className="mt-4 flex items-center gap-3 relative z-10">
             <span className="px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-[9px] font-black uppercase italic rounded-full">Zero Backend</span>
-            <span className="px-3 py-1 bg-red-500/10 border border-red-500/20 text-red-500 text-[9px] font-black uppercase italic rounded-full">100% On-Chain</span>
+            <span className="px-3 py-1 bg-red-500/10 border border-red-500/20 text-red-500 text-[9px] font-black uppercase italic rounded-full">3% Auto-Inject</span>
             <span className="px-3 py-1 bg-sky-500/10 border border-sky-500/20 text-sky-400 text-[9px] font-black uppercase italic rounded-full">Open Source UI</span>
          </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-         {/* Rule 1 */}
+         {/* Rule 1: Hold to Activate */}
          <div className="p-6 bg-zinc-950/50 border border-white/5 rounded-2xl space-y-4 shadow-inner hover:border-red-500/30 transition-colors group">
             <div className="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center text-red-500 group-hover:scale-110 transition-transform"><Wallet size={24}/></div>
             <h3 className="text-lg font-black text-white uppercase italic">{t('rules.r1Title')}</h3>
@@ -37,7 +37,8 @@ export const Rules: React.FC<RulesProps> = ({ config, tokenSymbol, tokenDecimals
                {t('rules.r1Desc', { min: config ? formatTokens(config.minHolding, tokenDecimals) : '...', symbol: tokenSymbol })}
             </p>
          </div>
-         {/* Rule 2 */}
+
+         {/* Rule 2: Linear Weights */}
          <div className="p-6 bg-zinc-950/50 border border-white/5 rounded-2xl space-y-4 shadow-inner hover:border-amber-500/30 transition-colors group">
             <div className="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-500 group-hover:scale-110 transition-transform"><Dna size={24}/></div>
             <h3 className="text-lg font-black text-white uppercase italic">{t('rules.r2Title')}</h3>
@@ -45,7 +46,8 @@ export const Rules: React.FC<RulesProps> = ({ config, tokenSymbol, tokenDecimals
                {t('rules.r2Desc', { min: config ? formatTokens(config.minHolding, tokenDecimals) : '...', max: config ? formatTokens(config.fullRewardHolding, tokenDecimals) : '...' })}
             </p>
          </div>
-         {/* Rule 3 */}
+
+         {/* Rule 3: Awakener Bounty */}
          <div className="p-6 bg-zinc-950/50 border border-white/5 rounded-2xl space-y-4 shadow-inner hover:border-emerald-500/30 transition-colors group">
             <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-500 group-hover:scale-110 transition-transform"><Zap size={24}/></div>
             <h3 className="text-lg font-black text-white uppercase italic">{t('rules.r3Title')}</h3>
@@ -53,7 +55,8 @@ export const Rules: React.FC<RulesProps> = ({ config, tokenSymbol, tokenDecimals
                {t('rules.r3Desc', { minTime: config ? config.lotteryInterval / 60 : '...' })}
             </p>
          </div>
-         {/* Rule 4 */}
+
+         {/* Rule 4: Community Supervision */}
          <div className="p-6 bg-zinc-950/50 border border-white/5 rounded-2xl space-y-4 shadow-inner hover:border-purple-500/30 transition-colors group">
             <div className="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-500 group-hover:scale-110 transition-transform"><Gavel size={24}/></div>
             <h3 className="text-lg font-black text-white uppercase italic">{t('rules.r4Title')}</h3>
@@ -61,6 +64,7 @@ export const Rules: React.FC<RulesProps> = ({ config, tokenSymbol, tokenDecimals
                {t('rules.r4Desc')}
             </p>
          </div>
+
          {/* Rule 5 - Perpetual & Zero Backend */}
          <div className="p-6 bg-gradient-to-br from-sky-950/40 to-black border border-sky-500/20 rounded-2xl space-y-4 shadow-xl hover:border-sky-500/50 transition-all group md:col-span-2">
             <div className="flex items-start justify-between">

@@ -1,25 +1,32 @@
-
 import React, { useEffect, useState } from 'react';
-import { RotateCcw, Search, Flame, Loader2 } from 'lucide-react';
+import { RotateCcw, Search, Flame, Loader2, Heart, Info, Fuel, Coins } from 'lucide-react';
 import { ethers } from 'ethers';
-import { LinkStats, GasRewardStats } from '../types';
+import { LinkStats, GasRewardStats, ContractConfig } from '../types';
 import { formatBNBValue, GovernanceSection } from '../components/Shared';
 import { useLanguage } from '../contexts/LanguageContext';
+import { CONTRACT_ADDRESS } from '../constants';
+import { ERC20_ABI } from '../abi';
 
 interface CommunityProps {
   loading: boolean;
+  account: string | null;
   linkStats: LinkStats | null;
   gasRewardStats: GasRewardStats | null;
+  config: ContractConfig | null;
   cleanupProgress: { remaining: number, percent: number } | null;
   readOnlyContract: ethers.Contract;
   onExecute: (method: string, args: any[]) => void;
   showNotification: (type: 'error' | 'success' | 'info', title: string, message: string) => void;
 }
 
-export const Community: React.FC<CommunityProps> = ({ loading, linkStats, gasRewardStats, cleanupProgress, readOnlyContract, onExecute, showNotification }) => {
+export const Community: React.FC<CommunityProps> = ({ loading, account, linkStats, gasRewardStats, config, cleanupProgress, readOnlyContract, onExecute, showNotification }) => {
   const { t } = useLanguage();
   const [recycleAddr, setRecycleAddr] = useState("");
   const [pendingDetails, setPendingDetails] = useState<{amount: string, since: number, canRecycle: boolean, recycleTime: number} | null>(null);
+  
+  // Donation states
+  const [donateAmount, setDonateAmount] = useState("");
+  const [isDonating, setIsDonating] = useState(false);
 
   useEffect(() => {
       if(ethers.isAddress(recycleAddr)) {
@@ -29,8 +36,40 @@ export const Community: React.FC<CommunityProps> = ({ loading, linkStats, gasRew
       } else { setPendingDetails(null); }
   }, [recycleAddr, readOnlyContract]);
 
+  const handleDonate = async () => {
+    if (!account) return showNotification('info', t('nav.connect'), t('terminal.connectDesc'));
+    if (!donateAmount || isNaN(parseFloat(donateAmount)) || parseFloat(donateAmount) <= 0) return;
+    if (!config?.linkBep20Address) return;
+
+    setIsDonating(true);
+    try {
+      const provider = new ethers.BrowserProvider((window as any).ethereum);
+      const signer = await provider.getSigner();
+      const linkContract = new ethers.Contract(config.linkBep20Address, ERC20_ABI, signer);
+      
+      const amountWei = ethers.parseUnits(donateAmount, 18);
+      showNotification('info', t('tx.processing'), t('tx.processingDesc'));
+      
+      const tx = await linkContract.transfer(CONTRACT_ADDRESS, amountWei);
+      await tx.wait();
+      
+      showNotification('success', t('tx.success'), t('tx.successDesc'));
+      setDonateAmount("");
+    } catch (err: any) {
+      console.error(err);
+      showNotification('error', t('errors.unknown'), t('errors.unknownDesc'));
+    } finally {
+      setIsDonating(false);
+    }
+  };
+
+  const totalLink = parseFloat(linkStats?.totalLinkBalance || '0');
+  const fuelHealth = Math.min(100, (totalLink / 20) * 100);
+  const isLowFuel = totalLink < 20;
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 animate-in fade-in pb-16">
+       {/* Top Row: Core Governance */}
        <GovernanceSection loading={loading} title={t('community.oracleTitle')}
           stats={[
             { label: "ERC-677 LINK (VRF)", value: `${formatBNBValue(linkStats?.erc677Balance || '0')} LINK` },
@@ -58,6 +97,69 @@ export const Community: React.FC<CommunityProps> = ({ loading, linkStats, gasRew
           onAction={onExecute} 
        />
        
+       {/* Donation Section */}
+       <div className="md:col-span-2 glass-card rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-8 border border-white/10 shadow-2xl space-y-8 relative overflow-hidden">
+          <div className="absolute top-0 right-0 p-8 opacity-5"><Heart size={160} className="text-red-500" /></div>
+          
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
+            <div className="space-y-2">
+              <h3 className="text-xl font-black text-white uppercase italic flex items-center gap-2">
+                <Heart size={20} className="text-red-500 fill-red-500 animate-pulse"/> {t('community.donationTitle')}
+              </h3>
+              <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">{t('community.donationNote')}</p>
+            </div>
+            
+            <div className="flex items-center gap-4 bg-zinc-950/50 p-4 rounded-2xl border border-white/5 shadow-inner min-w-[200px]">
+               <div className="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center text-red-500"><Fuel size={20} /></div>
+               <div className="flex-1 space-y-1">
+                 <div className="flex justify-between text-[9px] font-black uppercase italic">
+                   <span className="text-zinc-600">协议燃料库存</span>
+                   <span className={isLowFuel ? 'text-red-500' : 'text-emerald-500'}>{totalLink.toFixed(2)} / 20 LINK</span>
+                 </div>
+                 <div className="w-full bg-zinc-900 h-2 rounded-full overflow-hidden">
+                   <div className={`h-full transition-all duration-1000 ${isLowFuel ? 'bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]' : 'bg-emerald-500'}`} style={{ width: `${fuelHealth}%` }}></div>
+                 </div>
+               </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 relative z-10">
+            <div className="lg:col-span-7 space-y-4">
+              <div className="p-6 bg-red-500/5 border border-red-500/10 rounded-2xl space-y-3">
+                <div className="flex items-center gap-2 text-red-500 font-black text-xs uppercase italic"><Info size={14}/> 为什么需要 LINK？</div>
+                <p className="text-[11px] text-zinc-400 font-bold leading-relaxed">{t('community.donationDesc')}</p>
+              </div>
+              
+              <div className="flex gap-2">
+                {[1, 5, 10, 20].map(amt => (
+                  <button key={amt} onClick={() => setDonateAmount(amt.toString())} className="flex-1 py-2.5 bg-zinc-900 border border-white/5 rounded-xl text-[10px] font-black text-zinc-500 hover:text-white hover:border-red-500/50 transition-all uppercase italic">+{amt} LINK</button>
+                ))}
+              </div>
+            </div>
+
+            <div className="lg:col-span-5 flex flex-col justify-center gap-4">
+              <div className="relative group">
+                 <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none text-zinc-600 group-focus-within:text-red-500 transition-colors"><Coins size={16}/></div>
+                 <input 
+                  type="number" 
+                  value={donateAmount} 
+                  onChange={(e) => setDonateAmount(e.target.value)} 
+                  placeholder={t('community.donationPlaceholder')} 
+                  className="w-full bg-zinc-950 border border-white/5 rounded-2xl py-5 pl-14 pr-6 text-sm font-mono font-black text-white focus:outline-none focus:border-red-500/50 transition-all shadow-inner"
+                 />
+              </div>
+              <button 
+                onClick={handleDonate}
+                disabled={isDonating || !donateAmount}
+                className={`w-full py-5 rounded-2xl text-xs font-black uppercase italic flex items-center justify-center gap-3 transition-all shadow-xl ${!donateAmount || isDonating ? 'bg-zinc-900 text-zinc-600 border border-white/5 cursor-not-allowed' : 'action-button active:scale-95'}`}
+              >
+                {isDonating ? <Loader2 size={16} className="animate-spin" /> : <><Heart size={16} /> {t('community.btnDonate')}</>}
+              </button>
+            </div>
+          </div>
+       </div>
+
+       {/* Recycle Section */}
        <div className="md:col-span-2 glass-card rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-8 border border-white/10 shadow-2xl space-y-6">
          <h3 className="text-lg font-black text-white uppercase italic pr-4 flex items-center gap-2"><RotateCcw size={18} className="text-red-500"/> {t('community.recycleTitle')}</h3>
          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-start">

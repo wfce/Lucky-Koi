@@ -550,7 +550,7 @@ const App: React.FC = () => {
           {activeTab === 'rules' && <Rules config={config} tokenSymbol={tokenSymbol} tokenDecimals={tokenDecimals} />}
           {activeTab === 'holders' && <Holders stats={stats} config={config} tokenSymbol={tokenSymbol} tokenDecimals={tokenDecimals} holdersData={holdersData} holdersPage={holdersPage} setHoldersPage={setHoldersPage} onExecute={executeTx} />}
           {activeTab === 'history' && <History history={history} historyPage={historyPage} setHistoryPage={setHistoryPage} />}
-          {activeTab === 'community' && <Community loading={loading} linkStats={linkStats} gasRewardStats={gasRewardStats} cleanupProgress={cleanupProgress} readOnlyContract={readOnlyContract} onExecute={executeTx} showNotification={showNotification} />}
+          {activeTab === 'community' && <Community loading={loading} account={account} linkStats={linkStats} gasRewardStats={gasRewardStats} config={config} cleanupProgress={cleanupProgress} readOnlyContract={readOnlyContract} onExecute={executeTx} showNotification={showNotification} />}
         </div>
         <div className="lg:col-span-4 sticky top-24 hidden lg:block">
           <PersonalTerminal account={account} loading={loading} userInfo={userInfo} config={config} tokenSymbol={tokenSymbol} tokenDecimals={tokenDecimals} hasSufficientBalance={hasSufficientBalance} onConnect={() => setIsModalOpen(true)} onExecute={executeTx} />
