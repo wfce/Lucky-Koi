@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 export interface ContractStats {
@@ -47,7 +48,11 @@ export interface ContractConfig {
   maxHolders: number;
   callbackGasLimit: number;
   tokenSet: boolean;
-  configLocked: boolean;
+  tokenLocked: boolean;
+  admin: string;
+  ownershipRenounced: boolean;
+  adminRenounced: boolean;
+  configLocked: boolean; // Computed or derived
 }
 
 export interface LinkStats {

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Activity, ShieldAlert, Wallet, Search, Sparkles, ArrowRightCircle, Loader2, CheckCircle2, AlertCircle, AlertTriangle } from 'lucide-react';
-import { UserInfo, ContractConfig } from '../types';
+import { UserInfo, ContractConfig, ContractStats } from '../types';
 import { formatTokens } from '../utils';
 import { formatBNBValue } from './Shared';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -11,6 +11,7 @@ interface TerminalProps {
   loading: boolean;
   userInfo: UserInfo | null;
   config: ContractConfig | null;
+  stats?: ContractStats | null; // 传入全局状态以判断 inProgress
   tokenSymbol: string;
   tokenDecimals: number;
   hasSufficientBalance: boolean;
@@ -18,12 +19,13 @@ interface TerminalProps {
   onExecute: (method: string, args?: any[]) => void;
 }
 
-export const PersonalTerminal: React.FC<TerminalProps> = ({ account, loading, userInfo, config, tokenSymbol, tokenDecimals, hasSufficientBalance, onConnect, onExecute }) => {
+export const PersonalTerminal: React.FC<TerminalProps> = ({ account, loading, userInfo, config, stats, tokenSymbol, tokenDecimals, hasSufficientBalance, onConnect, onExecute }) => {
   const { t } = useLanguage();
+  const inProgress = stats?.inProgress || false;
 
   return (
     <div className="glass-card rounded-[2rem] sm:rounded-[3rem] p-6 sm:p-8 border-t-8 border-red-500 shadow-3xl overflow-hidden group space-y-8">
-      <h3 className="text-xl font-black text-white flex items-center justify-between uppercase italic pr-4">{t('terminal.title')} <Activity size={16} className="text-red-500 animate-pulse" /></h3>
+      <h3 className="text-xl font-black text-white flex items-center justify-between uppercase italic pr-4">{t('terminal.title')} <Activity size={16} className={inProgress ? "text-amber-500 animate-spin" : "text-red-500 animate-pulse"} /></h3>
       
       {!account ? (
         <div className="space-y-6 py-6 animate-in slide-in-from-bottom-5 relative">
@@ -46,10 +48,28 @@ export const PersonalTerminal: React.FC<TerminalProps> = ({ account, loading, us
         <div className="space-y-8 py-4 animate-in fade-in">
           <div className={`p-6 rounded-[2.5rem] border transition-all shadow-inner space-y-5 relative overflow-hidden ${hasSufficientBalance ? 'bg-emerald-500/5 border-emerald-500/20' : 'bg-red-500/5 border-red-500/10'}`}>
              <div className="flex items-center justify-between"><span className="text-[9px] font-black text-zinc-600 uppercase italic">{t('terminal.detectTitle')}</span>{hasSufficientBalance ? (<span className="flex items-center gap-1.5 text-[8px] font-black text-emerald-500 uppercase italic"><CheckCircle2 size={10}/> {t('terminal.ready')}</span>) : (<span className="flex items-center gap-1.5 text-[8px] font-black text-red-500 uppercase italic"><AlertCircle size={10}/> {t('terminal.insufficient')}</span>)}</div>
-             <div className="space-y-1"><p className="text-[9px] text-zinc-600 font-black uppercase italic">{t('terminal.holding')} ({tokenSymbol})</p><div className="flex items-baseline gap-2"><h4 className="text-4xl font-black text-white tabular-nums tracking-tighter">{formatTokens(userInfo?.walletBalance, tokenDecimals)}</h4><span className="text-xs font-black text-zinc-700 uppercase italic">/ {config ? formatTokens(config.minHolding, tokenDecimals) : '--'}</span></div></div>
+             
+             {/* 优化后的余额显示布局：字体调小，增加换行容错 */}
+             <div className="space-y-1">
+                <p className="text-[9px] text-zinc-600 font-black uppercase italic">{t('terminal.holding')} ({tokenSymbol})</p>
+                <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2">
+                    <h4 className="text-2xl sm:text-3xl font-black text-white tabular-nums tracking-tighter break-all">
+                        {formatTokens(userInfo?.walletBalance, tokenDecimals)}
+                    </h4>
+                    <span className="text-xs sm:text-sm font-black text-zinc-500 uppercase italic">
+                        / {t('terminal.required')} {config ? formatTokens(config.minHolding, tokenDecimals) : '--'}
+                    </span>
+                </div>
+             </div>
           </div>
           <div className="space-y-4">
-              <button onClick={() => onExecute('register')} disabled={!hasSufficientBalance || loading} className={`w-full py-5 rounded-2xl text-xs font-black uppercase italic transition-all shadow-lg flex items-center justify-center gap-3 ${hasSufficientBalance && !loading ? 'action-button active:scale-95' : 'bg-zinc-900 text-zinc-600 cursor-not-allowed border border-white/5'}`}>{loading ? <Loader2 size={14} className="animate-spin" /> : (<>{hasSufficientBalance ? t('terminal.btnRegister') : t('terminal.btnRegisterDisable')}{hasSufficientBalance && <Sparkles size={14} className="animate-pulse" />}</>)}</button>
+              <button 
+                onClick={() => onExecute('register')} 
+                disabled={!hasSufficientBalance || loading || inProgress} 
+                className={`w-full py-5 rounded-2xl text-xs font-black uppercase italic transition-all shadow-lg flex items-center justify-center gap-3 ${hasSufficientBalance && !loading && !inProgress ? 'action-button active:scale-95' : 'bg-zinc-900 text-zinc-600 cursor-not-allowed border border-white/5'}`}
+              >
+                {loading ? <Loader2 size={14} className="animate-spin" /> : inProgress ? "锦鲤甄选中..." : (<>{hasSufficientBalance ? t('terminal.btnRegister') : t('terminal.btnRegisterDisable')}{hasSufficientBalance && <Sparkles size={14} className="animate-pulse" />}</>)}
+              </button>
           </div>
         </div>
       ) : (
@@ -61,7 +81,7 @@ export const PersonalTerminal: React.FC<TerminalProps> = ({ account, loading, us
           <div className="p-6 bg-zinc-950 rounded-[2rem] border border-white/5 space-y-5 shadow-inner">
             <div className="flex justify-between items-end"><div className="space-y-1"><p className="text-zinc-600 text-[9px] font-black uppercase italic">{t('terminal.weightTitle')}</p><h4 className="text-4xl font-black text-white stat-glow tabular-nums pr-8 leading-none">{userInfo.rewardPercentage}%</h4></div><div className={`mb-1 px-3 py-1 rounded-full text-[8px] font-black uppercase italic border ${userInfo.currentlyValid ? 'text-emerald-500 border-emerald-500/20' : 'text-red-500 border-red-500/20'}`}>{userInfo.currentlyValid ? t('terminal.weightActive') : t('terminal.weightInvalid')}</div></div>
             <div className="w-full bg-zinc-900 h-2.5 rounded-full overflow-hidden shadow-inner"><div className="bg-gradient-to-r from-red-500 to-amber-600 h-full transition-all duration-1000" style={{width: `${userInfo.rewardPercentage}%`}}></div></div>
-            {!userInfo.currentlyValid && (<div className="text-[8px] text-red-500 font-black uppercase italic text-center bg-red-500/10 p-2 rounded-lg border border-red-500/20">{t('terminal.warning')}</div>)}
+            {!userInfo.currentlyValid && (<div className="text-[8px] text-red-500 font-black uppercase italic text-center bg-red-500/10 p-2 rounded-lg border border-red-500/20">警告：实时持仓不达标，将被移出名册</div>)}
           </div>
           {parseFloat(userInfo.pending) > 0 ? (
              <div className="p-6 bg-red-950/20 border border-red-500/30 rounded-[2rem] space-y-5 shadow-inner relative overflow-hidden">
@@ -76,7 +96,13 @@ export const PersonalTerminal: React.FC<TerminalProps> = ({ account, loading, us
              <div className="bg-zinc-950 p-4 rounded-2xl border border-white/5 text-center shadow-inner"><p className="text-[8px] text-zinc-600 font-black uppercase mb-1 italic">{t('terminal.winCount')}</p><p className="text-xs font-black text-white">{userInfo.winCount} 次</p></div>
              <div className="bg-zinc-950 p-4 rounded-2xl border border-white/5 text-center shadow-inner"><p className="text-[8px] text-zinc-600 font-black uppercase mb-1 italic">{t('terminal.totalWon')}</p><p className="text-xs font-black text-amber-500">{formatBNBValue(userInfo.totalWon)}</p></div>
           </div>
-          <button onClick={() => onExecute('unregister')} disabled={loading} className={`w-full text-zinc-500 text-[9px] font-black uppercase tracking-[0.3em] transition-all text-center italic mt-2 flex items-center justify-center gap-2 ${loading ? 'cursor-not-allowed opacity-50' : 'hover:text-red-500 active:scale-95'}`}>{loading && <Loader2 size={10} className="animate-spin" />} {t('terminal.btnUnregister')}</button>
+          <button 
+            onClick={() => onExecute('unregister')} 
+            disabled={loading || inProgress} 
+            className={`w-full text-zinc-500 text-[9px] font-black uppercase tracking-[0.3em] transition-all text-center italic mt-2 flex items-center justify-center gap-2 ${loading || inProgress ? 'cursor-not-allowed opacity-50' : 'hover:text-red-500 active:scale-95'}`}
+          >
+            {loading && <Loader2 size={10} className="animate-spin" />} {inProgress ? "甄选中禁止注销" : t('terminal.btnUnregister')}
+          </button>
         </div>
       )}
     </div>

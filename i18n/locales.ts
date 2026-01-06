@@ -1,9 +1,10 @@
+
 export const translations = {
   zh: {
     app: {
       name: "幸运锦鲤",
       subtitle: "Lucky Koi Protocol",
-      desc: "基于Chainlink VRF V2.5 驱动",
+      desc: "全球最公平的Chainlink VRF V2.5随机抽奖机制",
       copyright: "© 2026 JINLI.LOL",
       network: "BNB Chain",
       syncing: "锦鲤纳福，瑞气集结中...",
@@ -98,7 +99,7 @@ export const translations = {
       r3Title: "三、唤醒赏金",
       r3Desc: "只要冷却结束，人人皆可“唤醒”锦鲤。唤醒者不仅获得功德，更可实时赚取 0.001-0.002 BNB 的唤醒赏金，由合约自动支付。",
       r4Title: "四、社区监督",
-      r4Desc: "若发现用户持仓不达标，社区可发起“举报”。被举报者有 1 小时补仓期，超时将被移出名册。这是完全去中心化的动态维护逻辑，确保名册真实有效，不影响真随机概率。",
+      r4Desc: "若发现用户持仓不达标，社区可发起“举报”。系统将立即核实持仓并执行移出名册。这是完全去中心化的动态维护逻辑，确保名册真实有效，不影响真随机概率。",
       r5Title: "五、0 后端 & 永续开源",
       r5Desc: "前端与合约代码 100% 开源。协议不依赖特定服务器。即便官方网站关闭，您仍可部署代码或在 BscScan 直接操作。纯粹、永久、不可关停。",
       guideTitle: "终端维护指南",
@@ -110,7 +111,7 @@ export const translations = {
       g1Note: "★ 唤醒操作由合约自动支付 Gas 补偿。",
       g2Title: "2. 燃料不足",
       g2Desc1: "现象：系统提示“燃料不足”。",
-      g2Desc2: "原因：VRF 订阅中缺少 LINK 燃料。虽然合约有 WBNB 自动购买机制，但极端行情可能导致购买失败。",
+      g2Desc2: "原因：VRF 订阅中缺少 LINK 燃料。虽然合约有 BNB 自动购买机制，但极端行情可能导致购买失败。",
       g2Desc3: "解法：前往【社区共治】，点击 “全量维护” 或补充 LINK。",
       g2Note: "合约支持自动通过 PegSwap 转换两种 LINK。",
       g3Title: "3. 状态卡死",
@@ -132,13 +133,13 @@ export const translations = {
       valid: "有效",
       invalid: "余额不足",
       grace: "宽限期中",
-      report: "清理/移除",
-      reportStart: "发起举报",
+      report: "立即移除",
+      reportStart: "发起清理",
       loading: "连通合约中...",
       empty: "名册暂空，待您激活..."
     },
     history: {
-      title: "历代锦鲤榜 (近 5000 区块)",
+      title: "历代锦鲤榜 (近 10000 区块)",
       wallet: "获选锦鲤",
       reward: "获赐福泽",
       weight: "持仓权重",
@@ -151,7 +152,7 @@ export const translations = {
       hunterTitle: "社区唤醒者看板",
       recycleTitle: "遗落福泽回收 (30天超期)",
       donationTitle: "LINK 燃料助农 (捐赠)",
-      donationDesc: "LINK 是 Chainlink VRF 物理随机源的唯一能源。虽然协议内置了 WBNB 自动购买 LINK 的逻辑，但为了规避流动性不足或极端行情导致的购买失败（Unforeseen Circumstances），强烈建议社区维持 20 枚以上的储备燃料。您的每一份捐赠都是协议永续运行的坚实保障。",
+      donationDesc: "LINK 是 Chainlink VRF 物理随机源的唯一能源。虽然协议内置了 BNB 自动购买 LINK 的逻辑，但为了规避流动性不足或极端行情导致的购买失败（Unforeseen Circumstances），强烈建议社区维持 20 枚以上的储备燃料。您的每一份捐赠都是协议永续运行的坚实保障。",
       donationPlaceholder: "输入 LINK 数量...",
       btnDonate: "贡献燃料 (LINK)",
       donationNote: "注：目前接受 BEP-20 LINK 捐赠，合约将自动通过 PegSwap 转换为 VRF 所需燃料。",
@@ -272,7 +273,7 @@ export const translations = {
     app: {
       name: "Lucky Koi",
       subtitle: "Lucky Koi Protocol",
-      desc: "World's First 0-Backend Luck Protocol driven by VRF V2.5",
+      desc: "Driven by Chainlink VRF V2.5",
       copyright: "© 2026 JINLI.LOL",
       network: "BNB Chain",
       syncing: "Summoning Lucky Koi...",
@@ -407,7 +408,7 @@ export const translations = {
       empty: "List empty, activate now..."
     },
     history: {
-      title: "History (Last 5000 Blocks)",
+      title: "History (Last 10000 Blocks)",
       wallet: "Winner",
       reward: "Reward",
       weight: "Weight",
@@ -420,7 +421,7 @@ export const translations = {
       hunterTitle: "Awakener Bounty Stats",
       recycleTitle: "Recycle Rewards (30 Days)",
       donationTitle: "Fuel Contribution (LINK)",
-      donationDesc: "LINK is the essential fuel for Chainlink VRF. While the protocol includes logic to auto-buy LINK using WBNB, manual donations are vital to circumvent potential failures due to low liquidity or market extremes (Unforeseen Circumstances). Maintaining a 20+ LINK reserve ensures 24/7 stability. Your support powers the perpetual engine.",
+      donationDesc: "LINK is the essential fuel for Chainlink VRF. While the protocol includes logic to auto-buy LINK using BNB, manual donations are vital to circumvent potential failures due to low liquidity or market extremes (Unforeseen Circumstances). Maintaining a 20+ LINK reserve ensures 24/7 stability. Your support powers the perpetual engine.",
       donationPlaceholder: "Enter LINK amount...",
       btnDonate: "Donate LINK",
       donationNote: "Note: Currently accepting BEP-20 LINK. The contract automatically converts to ERC-677 VRF fuel via PegSwap.",

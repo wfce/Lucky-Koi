@@ -1,5 +1,6 @@
+
 import React from 'react';
-import { FileText, Scale, Wallet, Dna, Zap, Gavel, Siren, Clock, Fuel, RotateCcw, Trash2, Globe, Github, Terminal, Eye } from 'lucide-react';
+import { FileText, Scale, Wallet, Dna, Zap, Gavel, Siren, Clock, Fuel, RotateCcw, Trash2, Globe, Github, Terminal, Eye, TrendingUp, Table } from 'lucide-react';
 import { ContractConfig } from '../types';
 import { formatTokens } from '../utils';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -12,6 +13,16 @@ interface RulesProps {
 
 export const Rules: React.FC<RulesProps> = ({ config, tokenSymbol, tokenDecimals }) => {
   const { t } = useLanguage();
+
+  const thresholds = [
+    { cap: "≤ $10,000", price: "~$0.00001", min: "1,500,000", full: "10,000,000", valMin: "≈ $15", valFull: "≈ $100" },
+    { cap: "≤ $20,000", price: "~$0.00002", min: "750,000", full: "10,000,000", valMin: "≈ $15", valFull: "≈ $200" },
+    { cap: "≤ $50,000", price: "~$0.00005", min: "300,000", full: "5,000,000", valMin: "≈ $15", valFull: "≈ $250" },
+    { cap: "≤ $100,000", price: "~$0.0001", min: "150,000", full: "5,000,000", valMin: "≈ $15", valFull: "≈ $500" },
+    { cap: "≤ $200,000", price: "~$0.0002", min: "75,000", full: "5,000,000", valMin: "≈ $15", valFull: "≈ $1,000" },
+    { cap: "≤ $500,000", price: "~$0.0005", min: "30,000", full: "5,000,000", valMin: "≈ $15", valFull: "≈ $2,500" },
+    { cap: "≤ $1,000,000", price: "~$0.001", min: "15,000", full: "5,000,000", valMin: "≈ $15", valFull: "≈ $5,000" },
+  ];
 
   return (
     <div className="space-y-6 animate-in fade-in">
@@ -91,6 +102,54 @@ export const Rules: React.FC<RulesProps> = ({ config, tokenSymbol, tokenDecimals
          </div>
       </div>
       
+      {/* Dynamic Threshold Table Section */}
+      <div className="mt-8 pt-8 border-t border-white/5">
+         <div className="glass-card rounded-[2rem] p-6 sm:p-8 border border-white/10 shadow-2xl relative overflow-hidden group">
+            <div className="absolute -right-10 -bottom-10 opacity-5 rotate-12"><TrendingUp size={200} /></div>
+            
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6 relative z-10">
+                <div className="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-500 shadow-[0_0_20px_rgba(245,158,11,0.2)]"><Table size={24}/></div>
+                <div>
+                   <h3 className="text-lg sm:text-xl font-black text-white uppercase italic">动态持仓门槛调整机制</h3>
+                   <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-1">
+                       每 5 分钟自动锚定市值 (Auto-Peg)，确保入场门槛恒定在约 $15 USD
+                   </p>
+                </div>
+            </div>
+
+            <div className="overflow-x-auto no-scrollbar relative z-10 rounded-xl border border-white/5">
+                <table className="w-full text-left min-w-[600px]">
+                    <thead>
+                        <tr className="bg-zinc-950/80 text-[9px] font-black uppercase tracking-wider text-zinc-500">
+                            <th className="px-6 py-4 italic">市值区间 (USD)</th>
+                            <th className="px-6 py-4 italic text-right">参考单价</th>
+                            <th className="px-6 py-4 italic text-right">最低持仓要求 (Token)</th>
+                            <th className="px-6 py-4 italic text-right">满额权重持仓 (Token)</th>
+                            <th className="px-6 py-4 italic text-right">最低门槛价值</th>
+                            <th className="px-6 py-4 italic text-right">满额权重价值</th>
+                        </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/5 font-mono text-[10px]">
+                        {thresholds.map((row, i) => (
+                            <tr key={i} className="hover:bg-white/[0.02] transition-colors">
+                                <td className="px-6 py-3.5 text-zinc-300 font-bold">{row.cap}</td>
+                                <td className="px-6 py-3.5 text-right text-zinc-500 font-bold">{row.price}</td>
+                                <td className="px-6 py-3.5 text-right text-emerald-400 font-black">{row.min}</td>
+                                <td className="px-6 py-3.5 text-right text-amber-500 font-black">{row.full}</td>
+                                <td className="px-6 py-3.5 text-right text-zinc-500">{row.valMin}</td>
+                                <td className="px-6 py-3.5 text-right text-zinc-500">{row.valFull}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+            <div className="mt-4 flex items-center gap-2 text-[9px] text-zinc-600 font-black italic relative z-10">
+                <Clock size={12} />
+                <span>注：自动化脚本每 5 分钟检查一次链上市值，若区间变动将自动调用合约更新参数。</span>
+            </div>
+         </div>
+      </div>
+
       {/* Maintenance Guide Section */}
       <div className="mt-8 pt-8 border-t border-white/5">
         <div className="flex items-center gap-3 mb-6">

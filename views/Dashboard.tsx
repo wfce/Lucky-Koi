@@ -133,7 +133,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ stats, history, triggerSta
           <HeroStat icon={<Gift size={14}/>} label={t('dashboard.stats.totalDistributed')} value={`${formatBNBValue(stats?.totalRewards || 0)}`} />
           <HeroStat icon={<Coins size={14}/>} label={t('dashboard.stats.contractTotal')} value={`${formatBNBValue(stats?.contractTotal || 0)}`} />
           <HeroStat icon={<Users size={14}/>} label={t('dashboard.stats.holderCount')} value={stats?.holderCount || 0} />
-          <HeroStat icon={<ShieldCheck size={14}/>} label={t('dashboard.stats.vrf')} value="VRF V2.5 Native" />
+          <HeroStat icon={<ShieldCheck size={14}/>} label={t('dashboard.stats.vrf')} value="VRF V2.5" />
         </div>
       </div>
 
