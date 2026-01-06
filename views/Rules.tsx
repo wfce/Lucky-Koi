@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { FileText, Scale, Wallet, Dna, Zap, Gavel, Siren, Clock, Fuel, RotateCcw, Trash2, Globe, Github } from 'lucide-react';
+import { FileText, Scale, Wallet, Dna, Zap, Gavel, Siren, Clock, Fuel, RotateCcw, Trash2, Globe, Github, Terminal, Eye } from 'lucide-react';
 import { ContractConfig } from '../types';
 import { formatTokens } from '../utils';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -23,8 +22,9 @@ export const Rules: React.FC<RulesProps> = ({ config, tokenSymbol, tokenDecimals
             {t('rules.desc')}
          </p>
          <div className="mt-4 flex items-center gap-3 relative z-10">
-            <span className="px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-[9px] font-black uppercase italic rounded-full">No Backend</span>
+            <span className="px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-[9px] font-black uppercase italic rounded-full">Zero Backend</span>
             <span className="px-3 py-1 bg-red-500/10 border border-red-500/20 text-red-500 text-[9px] font-black uppercase italic rounded-full">100% On-Chain</span>
+            <span className="px-3 py-1 bg-sky-500/10 border border-sky-500/20 text-sky-400 text-[9px] font-black uppercase italic rounded-full">Open Source UI</span>
          </div>
       </div>
 
@@ -61,15 +61,28 @@ export const Rules: React.FC<RulesProps> = ({ config, tokenSymbol, tokenDecimals
                {t('rules.r4Desc')}
             </p>
          </div>
-         {/* Rule 5 - OSS & Decentralization */}
-         <div className="p-6 bg-zinc-950/50 border border-white/5 rounded-2xl space-y-4 shadow-inner hover:border-sky-500/30 transition-colors group md:col-span-2 lg:col-span-1">
-            <div className="w-12 h-12 rounded-xl bg-sky-500/10 flex items-center justify-center text-sky-500 group-hover:scale-110 transition-transform"><Globe size={24}/></div>
+         {/* Rule 5 - Perpetual & Zero Backend */}
+         <div className="p-6 bg-gradient-to-br from-sky-950/40 to-black border border-sky-500/20 rounded-2xl space-y-4 shadow-xl hover:border-sky-500/50 transition-all group md:col-span-2">
+            <div className="flex items-start justify-between">
+                <div className="w-12 h-12 rounded-xl bg-sky-500/10 flex items-center justify-center text-sky-400 group-hover:scale-110 transition-transform"><Terminal size={24}/></div>
+                <div className="flex gap-2">
+                    <a href="https://github.com/wfce/Lucky-Koi" target="_blank" rel="noreferrer" className="p-2 bg-zinc-900 border border-white/5 rounded-lg text-zinc-500 hover:text-sky-400 transition-all"><Github size={14}/></a>
+                    <a href={`https://bscscan.com/address/${config?.tokenAddress}`} target="_blank" rel="noreferrer" className="p-2 bg-zinc-900 border border-white/5 rounded-lg text-zinc-500 hover:text-amber-500 transition-all"><Eye size={14}/></a>
+                </div>
+            </div>
             <h3 className="text-lg font-black text-white uppercase italic">{t('rules.r5Title')}</h3>
-            <p className="text-[11px] text-zinc-500 font-bold leading-relaxed">
+            <p className="text-[11px] text-zinc-400 font-bold leading-relaxed max-w-xl">
                {t('rules.r5Desc')}
             </p>
-            <div className="pt-2 flex items-center gap-3">
-               <a href="https://github.com/wfce/Lucky-Koi" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-[9px] font-black uppercase italic text-sky-400 hover:text-white transition-colors"><Github size={12}/> View Source</a>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                <div className="p-3 bg-white/5 rounded-xl border border-white/5">
+                    <h4 className="text-[9px] font-black text-sky-400 uppercase italic mb-1">自定义终端</h4>
+                    <p className="text-[8px] text-zinc-500 font-bold">前端完全解耦，支持 IPFS、Vercel 或本地部署。</p>
+                </div>
+                <div className="p-3 bg-white/5 rounded-xl border border-white/5">
+                    <h4 className="text-[9px] font-black text-amber-500 uppercase italic mb-1">直连合约</h4>
+                    <p className="text-[8px] text-zinc-500 font-bold">即便没有前端，也可通过 BscScan 直接调用 register/trigger 函数。</p>
+                </div>
             </div>
          </div>
       </div>

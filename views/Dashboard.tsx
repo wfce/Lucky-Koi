@@ -92,7 +92,6 @@ export const Dashboard: React.FC<DashboardProps> = ({ stats, history, triggerSta
                 <span className="text-base sm:text-xl font-black text-amber-500 uppercase italic pr-2">BNB</span>
               </div>
               
-              {/* Latest Winner Section */}
               <div className="min-h-[32px] pt-2 sm:pt-3 flex flex-col md:flex-row items-center justify-center md:justify-start gap-3 animate-in fade-in slide-in-from-bottom-2">
                  {history.length > 0 ? (
                    <>
@@ -129,14 +128,12 @@ export const Dashboard: React.FC<DashboardProps> = ({ stats, history, triggerSta
           </div>
         </div>
         
-        {/* Updated Grid for 5 items */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-8 pt-8 sm:pt-10 mt-8 sm:mt-10 border-t border-white/5 relative z-10">
           <HeroStat icon={<TrendingUp size={14}/>} label={t('dashboard.stats.totalLotteries')} value={stats?.totalLotteries || 0} />
-          {/* New Stat: Total Distributed */}
           <HeroStat icon={<Gift size={14}/>} label={t('dashboard.stats.totalDistributed')} value={`${formatBNBValue(stats?.totalRewards || 0)}`} />
           <HeroStat icon={<Coins size={14}/>} label={t('dashboard.stats.contractTotal')} value={`${formatBNBValue(stats?.contractTotal || 0)}`} />
           <HeroStat icon={<Users size={14}/>} label={t('dashboard.stats.holderCount')} value={stats?.holderCount || 0} />
-          <HeroStat icon={<ShieldCheck size={14}/>} label={t('dashboard.stats.vrf')} value="VRF V2.5" />
+          <HeroStat icon={<ShieldCheck size={14}/>} label={t('dashboard.stats.vrf')} value="VRF V2.5 Native" />
         </div>
       </div>
 
