@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { RotateCcw, Search, Flame, Loader2, Heart, Info, Fuel, Coins } from 'lucide-react';
 import { ethers } from 'ethers';
@@ -113,7 +114,7 @@ export const Community: React.FC<CommunityProps> = ({ loading, account, linkStat
                <div className="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center text-red-500"><Fuel size={20} /></div>
                <div className="flex-1 space-y-1">
                  <div className="flex justify-between text-[9px] font-black uppercase italic">
-                   <span className="text-zinc-600">协议燃料库存</span>
+                   <span className="text-zinc-500">协议燃料库存</span>
                    <span className={isLowFuel ? 'text-red-500' : 'text-emerald-500'}>{totalLink.toFixed(2)} / 20 LINK</span>
                  </div>
                  <div className="w-full bg-zinc-900 h-2 rounded-full overflow-hidden">
@@ -139,19 +140,19 @@ export const Community: React.FC<CommunityProps> = ({ loading, account, linkStat
 
             <div className="lg:col-span-5 flex flex-col justify-center gap-4">
               <div className="relative group">
-                 <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none text-zinc-600 group-focus-within:text-red-500 transition-colors"><Coins size={16}/></div>
+                 <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none text-zinc-500 group-focus-within:text-red-500 transition-colors"><Coins size={16}/></div>
                  <input 
                   type="number" 
                   value={donateAmount} 
                   onChange={(e) => setDonateAmount(e.target.value)} 
                   placeholder={t('community.donationPlaceholder')} 
-                  className="w-full bg-zinc-950 border border-white/5 rounded-2xl py-5 pl-14 pr-6 text-sm font-mono font-black text-white focus:outline-none focus:border-red-500/50 transition-all shadow-inner"
+                  className="w-full bg-zinc-950 border border-white/5 rounded-2xl py-5 pl-14 pr-6 text-sm font-mono font-black text-white focus:outline-none focus:border-red-500/50 transition-all shadow-inner placeholder-zinc-600"
                  />
               </div>
               <button 
                 onClick={handleDonate}
                 disabled={isDonating || !donateAmount}
-                className={`w-full py-5 rounded-2xl text-xs font-black uppercase italic flex items-center justify-center gap-3 transition-all shadow-xl ${!donateAmount || isDonating ? 'bg-zinc-900 text-zinc-600 border border-white/5 cursor-not-allowed' : 'action-button active:scale-95'}`}
+                className={`w-full py-5 rounded-2xl text-xs font-black uppercase italic flex items-center justify-center gap-3 transition-all shadow-xl ${!donateAmount || isDonating ? 'bg-zinc-900 text-zinc-500 border border-white/5 cursor-not-allowed' : 'action-button active:scale-95'}`}
               >
                 {isDonating ? <Loader2 size={16} className="animate-spin" /> : <><Heart size={16} /> {t('community.btnDonate')}</>}
               </button>
@@ -165,17 +166,17 @@ export const Community: React.FC<CommunityProps> = ({ loading, account, linkStat
          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-start">
             <div className="space-y-4">
                 <div className="flex-1 relative group">
-                    <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none text-zinc-600 group-focus-within:text-red-500 transition-colors"><Search size={14}/></div>
-                    <input type="text" value={recycleAddr} onChange={(e) => setRecycleAddr(e.target.value)} placeholder={t('community.searchPlaceholder')} disabled={loading} className="w-full bg-zinc-950 border border-white/5 rounded-2xl py-4 pl-12 pr-6 text-xs font-mono text-zinc-300 focus:outline-none focus:border-red-500/50 transition-all shadow-inner disabled:opacity-50"/>
+                    <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none text-zinc-500 group-focus-within:text-red-500 transition-colors"><Search size={14}/></div>
+                    <input type="text" value={recycleAddr} onChange={(e) => setRecycleAddr(e.target.value)} placeholder={t('community.searchPlaceholder')} disabled={loading} className="w-full bg-zinc-950 border border-white/5 rounded-2xl py-4 pl-12 pr-6 text-xs font-mono text-zinc-300 focus:outline-none focus:border-red-500/50 transition-all shadow-inner disabled:opacity-50 placeholder-zinc-600"/>
                 </div>
                 {pendingDetails ? (
                      <div className="p-4 bg-zinc-900/50 border border-white/5 rounded-2xl space-y-2">
-                         <div className="flex justify-between text-[9px] uppercase font-black text-zinc-500 italic"><span>{t('community.pendingAmount')}</span><span className="text-emerald-400">{pendingDetails.amount} BNB</span></div>
-                         <div className="flex justify-between text-[9px] uppercase font-black text-zinc-500 italic"><span>{t('community.timeGenerated')}</span><span>{new Date(pendingDetails.since * 1000).toLocaleString()}</span></div>
-                         <div className="flex justify-between text-[9px] uppercase font-black text-zinc-500 italic"><span>{t('community.timeUnlock')}</span><span>{new Date(pendingDetails.recycleTime * 1000).toLocaleString()}</span></div>
+                         <div className="flex justify-between text-[9px] uppercase font-black text-zinc-400 italic"><span>{t('community.pendingAmount')}</span><span className="text-emerald-400">{pendingDetails.amount} BNB</span></div>
+                         <div className="flex justify-between text-[9px] uppercase font-black text-zinc-400 italic"><span>{t('community.timeGenerated')}</span><span>{new Date(pendingDetails.since * 1000).toLocaleString()}</span></div>
+                         <div className="flex justify-between text-[9px] uppercase font-black text-zinc-400 italic"><span>{t('community.timeUnlock')}</span><span>{new Date(pendingDetails.recycleTime * 1000).toLocaleString()}</span></div>
                          <div className={`mt-2 text-center p-2 rounded-lg text-[9px] font-black uppercase italic border ${pendingDetails.canRecycle ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-500' : 'bg-zinc-800 border-zinc-700 text-zinc-500'}`}>{pendingDetails.canRecycle ? t('community.unlocked') : t('community.locked')}</div>
                      </div>
-                ) : (<div className="p-4 text-center text-[9px] text-zinc-600 font-black uppercase italic">{t('community.checkStatus')}</div>)}
+                ) : (<div className="p-4 text-center text-[9px] text-zinc-500 font-black uppercase italic">{t('community.checkStatus')}</div>)}
             </div>
             <div className="flex flex-col gap-4 h-full">
                  <div className="flex-1 p-4 bg-red-900/10 border border-red-500/10 rounded-2xl">

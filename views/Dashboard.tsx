@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Globe, Trophy, TrendingUp, Coins, Users, ShieldCheck, Target, Zap, Waves, AlertCircle, Settings, Clock, Fuel, Sparkles, Gift } from 'lucide-react';
+import { Globe, Trophy, TrendingUp, Coins, Users, ShieldCheck, Target, Zap, Waves, AlertCircle, Settings, Clock, Fuel, Sparkles, Gift, Loader2 } from 'lucide-react';
 import { ContractStats, LotteryRecord, TriggerStatus } from '../types';
 import { formatBNBValue, StatusBadge, DigitBox, HeroStat, CardIconBox } from '../components/Shared';
 import { LuckyLogo } from '../components/Logo';
@@ -16,7 +16,9 @@ interface DashboardProps {
 
 export const Dashboard: React.FC<DashboardProps> = ({ stats, history, triggerStatus, countdown, mobileTerminal }) => {
   const { t } = useLanguage();
-  const isFlipped = stats?.inProgress || stats?.canTrigger || (countdown.isZero && !stats?.canTrigger && triggerStatus !== TriggerStatus.IntervalNotReached);
+  
+  // Flip immediately when countdown hits zero to ensure smooth visual transition, regardless of data sync latency
+  const isFlipped = stats?.inProgress || stats?.canTrigger || countdown.isZero;
 
   const renderCardBackContent = () => {
     if (stats?.inProgress) {
@@ -31,6 +33,22 @@ export const Dashboard: React.FC<DashboardProps> = ({ stats, history, triggerSta
           </div>
         </>
       );
+    }
+    
+    // Transitional state: Timer is 0 but contract status hasn't updated from "Cooldown" (IntervalNotReached) yet
+    if (countdown.isZero && !stats?.canTrigger && triggerStatus === TriggerStatus.IntervalNotReached) {
+        return (
+            <div className="flex flex-col items-center gap-4 animate-in fade-in zoom-in-95 duration-500">
+               <div className="w-16 h-16 rounded-full bg-zinc-800/80 border border-white/10 flex items-center justify-center shadow-lg relative">
+                   <div className="absolute inset-0 bg-white/5 rounded-full animate-ping opacity-20"></div>
+                   <Loader2 size={32} className="text-zinc-400 animate-spin" />
+               </div>
+               <div className="space-y-1">
+                   <h3 className="text-white text-lg font-black uppercase italic">{t('app.syncing')}</h3>
+                   <p className="text-zinc-500 text-[10px] font-black uppercase tracking-widest animate-pulse">{t('app.syncingDesc')}</p>
+               </div>
+            </div>
+        );
     }
     
     let icon = <AlertCircle size={32} className="text-white"/>;
@@ -84,7 +102,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ stats, history, triggerSta
           <div className="space-y-4 sm:space-y-6 text-center md:text-left flex-1 w-full">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-amber-500/10 border border-amber-500/20 rounded-full text-[10px] font-black text-amber-500 uppercase tracking-widest italic pr-2"><Globe size={12}/> {t('dashboard.poolTitle')}</div>
             <div className="space-y-1">
-              <p className="text-zinc-600 text-[10px] font-black uppercase tracking-[0.2em] italic pr-2">{t('dashboard.poolDesc')}</p>
+              <p className="text-zinc-400 text-[10px] font-black uppercase tracking-[0.2em] italic pr-2">{t('dashboard.poolDesc')}</p>
               <div className="flex items-baseline justify-center md:justify-start gap-2 flex-wrap">
                 <h1 className="text-5xl sm:text-7xl font-black text-white stat-glow tabular-nums tracking-tighter pr-2 sm:pr-6 pb-2 leading-tight accent-gradient">
                     {formatBNBValue(stats?.actualLotteryPool || "0")}
@@ -109,7 +127,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ stats, history, triggerSta
                  ) : (
                    <div className="flex items-center gap-2 opacity-50 select-none">
                       <Sparkles size={12} className="text-zinc-500" />
-                      <span className="text-[10px] font-bold text-zinc-600 uppercase italic tracking-wider">{t('dashboard.card.noHoldersDesc')}</span>
+                      <span className="text-[10px] font-bold text-zinc-500 uppercase italic tracking-wider">{t('dashboard.card.noHoldersDesc')}</span>
                    </div>
                  )}
               </div>
@@ -118,7 +136,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ stats, history, triggerSta
           <div className="flip-container w-full md:w-[320px] h-[180px] sm:h-[200px] mb-4 sm:mb-0">
             <div className={`flip-card w-full h-full ${isFlipped ? 'flipped' : ''}`}>
               <div className="flip-card-front bg-zinc-950/80 p-6 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] border border-white/5 shadow-2xl flex flex-col justify-between">
-                <div className="flex items-center justify-between"><p className="text-zinc-500 text-[9px] font-black uppercase tracking-widest flex items-center gap-1.5 italic pr-2"><Clock size={10}/> {t('dashboard.countdown')}</p><StatusBadge active={stats?.canTrigger || false} inProgress={false} statusId={triggerStatus} /></div>
+                <div className="flex items-center justify-between"><p className="text-zinc-400 text-[9px] font-black uppercase tracking-widest flex items-center gap-1.5 italic pr-2"><Clock size={10}/> {t('dashboard.countdown')}</p><StatusBadge active={stats?.canTrigger || false} inProgress={false} statusId={triggerStatus} /></div>
                 <div className="flex gap-2 sm:gap-3"><DigitBox label={t('dashboard.hour')} value={countdown.h} /><DigitBox label={t('dashboard.minute')} value={countdown.m} /><DigitBox label={t('dashboard.second')} value={countdown.s} /></div>
               </div>
               <div className="flip-card-back bg-gradient-to-br from-red-500/10 to-amber-500/10 p-6 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] border border-red-500/30 shadow-[0_0_50px_rgba(239,68,68,0.2)] flex flex-col justify-center items-center gap-4 text-center">

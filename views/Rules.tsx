@@ -1,9 +1,10 @@
 
 import React from 'react';
-import { FileText, Scale, Wallet, Dna, Zap, Gavel, Siren, Clock, Fuel, RotateCcw, Trash2, Globe, Github, Terminal, Eye, TrendingUp, Table } from 'lucide-react';
+import { FileText, Scale, Wallet, Dna, Zap, Gavel, Siren, Clock, Fuel, RotateCcw, Trash2, Globe, Github, Terminal, Eye, TrendingUp, Table, UserMinus } from 'lucide-react';
 import { ContractConfig } from '../types';
 import { formatTokens } from '../utils';
 import { useLanguage } from '../contexts/LanguageContext';
+import { CONTRACT_ADDRESS } from '../constants';
 
 interface RulesProps {
   config: ContractConfig | null;
@@ -15,13 +16,13 @@ export const Rules: React.FC<RulesProps> = ({ config, tokenSymbol, tokenDecimals
   const { t } = useLanguage();
 
   const thresholds = [
-    { cap: "≤ $10,000", price: "~$0.00001", min: "1,500,000", full: "10,000,000", valMin: "≈ $15", valFull: "≈ $100" },
-    { cap: "≤ $20,000", price: "~$0.00002", min: "750,000", full: "10,000,000", valMin: "≈ $15", valFull: "≈ $200" },
-    { cap: "≤ $50,000", price: "~$0.00005", min: "300,000", full: "5,000,000", valMin: "≈ $15", valFull: "≈ $250" },
-    { cap: "≤ $100,000", price: "~$0.0001", min: "150,000", full: "5,000,000", valMin: "≈ $15", valFull: "≈ $500" },
-    { cap: "≤ $200,000", price: "~$0.0002", min: "75,000", full: "5,000,000", valMin: "≈ $15", valFull: "≈ $1,000" },
-    { cap: "≤ $500,000", price: "~$0.0005", min: "30,000", full: "5,000,000", valMin: "≈ $15", valFull: "≈ $2,500" },
-    { cap: "≤ $1,000,000", price: "~$0.001", min: "15,000", full: "5,000,000", valMin: "≈ $15", valFull: "≈ $5,000" },
+    { cap: "≤ $10,000", price: "~$0.00001", min: "3,000,000", full: "10,000,000", valMin: "≈ $30", valFull: "≈ $100" },
+    { cap: "≤ $20,000", price: "~$0.00002", min: "1,500,000", full: "10,000,000", valMin: "≈ $30", valFull: "≈ $200" },
+    { cap: "≤ $50,000", price: "~$0.00005", min: "600,000", full: "10,000,000", valMin: "≈ $30", valFull: "≈ $500" },
+    { cap: "≤ $100,000", price: "~$0.0001", min: "300,000", full: "10,000,000", valMin: "≈ $30", valFull: "≈ $1,000" },
+    { cap: "≤ $200,000", price: "~$0.0002", min: "150,000", full: "5,000,000", valMin: "≈ $30", valFull: "≈ $1,000" },
+    { cap: "≤ $500,000", price: "~$0.0005", min: "60,000", full: "2,000,000", valMin: "≈ $30", valFull: "≈ $1,000" },
+    { cap: "≤ $1,000,000", price: "~$0.001", min: "30,000", full: "1,000,000", valMin: "≈ $30", valFull: "≈ $1,000" },
   ];
 
   return (
@@ -44,7 +45,7 @@ export const Rules: React.FC<RulesProps> = ({ config, tokenSymbol, tokenDecimals
          <div className="p-6 bg-zinc-950/50 border border-white/5 rounded-2xl space-y-4 shadow-inner hover:border-red-500/30 transition-colors group">
             <div className="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center text-red-500 group-hover:scale-110 transition-transform"><Wallet size={24}/></div>
             <h3 className="text-lg font-black text-white uppercase italic">{t('rules.r1Title')}</h3>
-            <p className="text-[11px] text-zinc-500 font-bold leading-relaxed">
+            <p className="text-[11px] text-zinc-400 font-bold leading-relaxed">
                {t('rules.r1Desc', { min: config ? formatTokens(config.minHolding, tokenDecimals) : '...', symbol: tokenSymbol })}
             </p>
          </div>
@@ -53,7 +54,7 @@ export const Rules: React.FC<RulesProps> = ({ config, tokenSymbol, tokenDecimals
          <div className="p-6 bg-zinc-950/50 border border-white/5 rounded-2xl space-y-4 shadow-inner hover:border-amber-500/30 transition-colors group">
             <div className="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-500 group-hover:scale-110 transition-transform"><Dna size={24}/></div>
             <h3 className="text-lg font-black text-white uppercase italic">{t('rules.r2Title')}</h3>
-            <p className="text-[11px] text-zinc-500 font-bold leading-relaxed">
+            <p className="text-[11px] text-zinc-400 font-bold leading-relaxed">
                {t('rules.r2Desc', { min: config ? formatTokens(config.minHolding, tokenDecimals) : '...', max: config ? formatTokens(config.fullRewardHolding, tokenDecimals) : '...' })}
             </p>
          </div>
@@ -62,7 +63,7 @@ export const Rules: React.FC<RulesProps> = ({ config, tokenSymbol, tokenDecimals
          <div className="p-6 bg-zinc-950/50 border border-white/5 rounded-2xl space-y-4 shadow-inner hover:border-emerald-500/30 transition-colors group">
             <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-500 group-hover:scale-110 transition-transform"><Zap size={24}/></div>
             <h3 className="text-lg font-black text-white uppercase italic">{t('rules.r3Title')}</h3>
-            <p className="text-[11px] text-zinc-500 font-bold leading-relaxed">
+            <p className="text-[11px] text-zinc-400 font-bold leading-relaxed">
                {t('rules.r3Desc', { minTime: config ? config.lotteryInterval / 60 : '...' })}
             </p>
          </div>
@@ -71,7 +72,7 @@ export const Rules: React.FC<RulesProps> = ({ config, tokenSymbol, tokenDecimals
          <div className="p-6 bg-zinc-950/50 border border-white/5 rounded-2xl space-y-4 shadow-inner hover:border-purple-500/30 transition-colors group">
             <div className="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-500 group-hover:scale-110 transition-transform"><Gavel size={24}/></div>
             <h3 className="text-lg font-black text-white uppercase italic">{t('rules.r4Title')}</h3>
-            <p className="text-[11px] text-zinc-500 font-bold leading-relaxed">
+            <p className="text-[11px] text-zinc-400 font-bold leading-relaxed">
                {t('rules.r4Desc')}
             </p>
          </div>
@@ -82,7 +83,7 @@ export const Rules: React.FC<RulesProps> = ({ config, tokenSymbol, tokenDecimals
                 <div className="w-12 h-12 rounded-xl bg-sky-500/10 flex items-center justify-center text-sky-400 group-hover:scale-110 transition-transform"><Terminal size={24}/></div>
                 <div className="flex gap-2">
                     <a href="https://github.com/wfce/Lucky-Koi" target="_blank" rel="noreferrer" className="p-2 bg-zinc-900 border border-white/5 rounded-lg text-zinc-500 hover:text-sky-400 transition-all"><Github size={14}/></a>
-                    <a href={`https://bscscan.com/address/${config?.tokenAddress}`} target="_blank" rel="noreferrer" className="p-2 bg-zinc-900 border border-white/5 rounded-lg text-zinc-500 hover:text-amber-500 transition-all"><Eye size={14}/></a>
+                    <a href={`https://bscscan.com/address/${CONTRACT_ADDRESS}`} target="_blank" rel="noreferrer" className="p-2 bg-zinc-900 border border-white/5 rounded-lg text-zinc-500 hover:text-amber-500 transition-all"><Eye size={14}/></a>
                 </div>
             </div>
             <h3 className="text-lg font-black text-white uppercase italic">{t('rules.r5Title')}</h3>
@@ -111,8 +112,8 @@ export const Rules: React.FC<RulesProps> = ({ config, tokenSymbol, tokenDecimals
                 <div className="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-500 shadow-[0_0_20px_rgba(245,158,11,0.2)]"><Table size={24}/></div>
                 <div>
                    <h3 className="text-lg sm:text-xl font-black text-white uppercase italic">动态持仓门槛调整机制</h3>
-                   <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-1">
-                       每 5 分钟自动锚定市值 (Auto-Peg)，确保入场门槛恒定在约 $15 USD
+                   <p className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest mt-1">
+                       每 5 分钟自动锚定市值 (Auto-Peg)，确保入场门槛恒定在约 $30 USD，满额权重价值在 $100k 市值后恒定约 $1,000 USD
                    </p>
                 </div>
             </div>
@@ -120,13 +121,13 @@ export const Rules: React.FC<RulesProps> = ({ config, tokenSymbol, tokenDecimals
             <div className="overflow-x-auto no-scrollbar relative z-10 rounded-xl border border-white/5">
                 <table className="w-full text-left min-w-[600px]">
                     <thead>
-                        <tr className="bg-zinc-950/80 text-[9px] font-black uppercase tracking-wider text-zinc-500">
+                        <tr className="bg-zinc-950/80 text-[9px] font-black uppercase tracking-wider text-zinc-400">
                             <th className="px-6 py-4 italic">市值区间 (USD)</th>
                             <th className="px-6 py-4 italic text-right">参考单价</th>
-                            <th className="px-6 py-4 italic text-right">最低持仓要求 (Token)</th>
-                            <th className="px-6 py-4 italic text-right">满额权重持仓 (Token)</th>
-                            <th className="px-6 py-4 italic text-right">最低门槛价值</th>
-                            <th className="px-6 py-4 italic text-right">满额权重价值</th>
+                            <th className="px-6 py-4 italic text-right">最低持仓量</th>
+                            <th className="px-6 py-4 italic text-right">全部持仓量 (100%权重)</th>
+                            <th className="px-6 py-4 italic text-right">最低价值</th>
+                            <th className="px-6 py-4 italic text-right">全持仓价值</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-white/5 font-mono text-[10px]">
@@ -143,7 +144,7 @@ export const Rules: React.FC<RulesProps> = ({ config, tokenSymbol, tokenDecimals
                     </tbody>
                 </table>
             </div>
-            <div className="mt-4 flex items-center gap-2 text-[9px] text-zinc-600 font-black italic relative z-10">
+            <div className="mt-4 flex items-center gap-2 text-[9px] text-zinc-500 font-black italic relative z-10">
                 <Clock size={12} />
                 <span>注：自动化脚本每 5 分钟检查一次链上市值，若区间变动将自动调用合约更新参数。</span>
             </div>
@@ -160,7 +161,7 @@ export const Rules: React.FC<RulesProps> = ({ config, tokenSymbol, tokenDecimals
             </div>
         </div>
         
-        <div className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Item 1 */}
             <div className="glass-card p-5 rounded-2xl border border-white/5 hover:border-amber-500/30 transition-all group">
                 <div className="flex items-start gap-4">
@@ -218,6 +219,22 @@ export const Rules: React.FC<RulesProps> = ({ config, tokenSymbol, tokenDecimals
                         <div className="text-[10px] text-zinc-400 font-bold leading-relaxed space-y-1">
                             <p>{t('rules.g4Desc1')}</p>
                             <p>{t('rules.g4Desc2')}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Item 5 - Cleanup/Remove Invalid */}
+            <div className="glass-card p-5 rounded-2xl border border-white/5 hover:border-orange-500/30 transition-all group col-span-1 md:col-span-2">
+                <div className="flex items-start gap-4">
+                    <div className="mt-1 p-2 bg-orange-500/10 rounded-lg text-orange-500 shrink-0"><UserMinus size={18}/></div>
+                    <div className="space-y-2">
+                        <h4 className="text-sm font-black text-white uppercase italic">{t('rules.g5Title')}</h4>
+                        <div className="text-[10px] text-zinc-400 font-bold leading-relaxed space-y-1">
+                            <p>{t('rules.g5Desc1')}</p>
+                            <p>{t('rules.g5Desc2')}</p>
+                            <p>{t('rules.g5Desc3')}</p>
+                            <p className="text-orange-500/80 italic">{t('rules.g5Note')}</p>
                         </div>
                     </div>
                 </div>

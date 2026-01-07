@@ -35,7 +35,7 @@ export const StatusBadge: React.FC<{ active: boolean, inProgress: boolean, statu
   else if (statusId === 4) { text = t('dashboard.status.noHolders'); icon = <User size={10} />; }
 
   return (
-    <span className="px-3 py-1.5 bg-zinc-500/10 border border-zinc-500/20 text-zinc-500 text-[9px] font-black uppercase rounded-full flex items-center gap-1.5 shadow-sm italic whitespace-nowrap pr-5">
+    <span className="px-3 py-1.5 bg-zinc-500/10 border border-zinc-500/20 text-zinc-400 text-[9px] font-black uppercase rounded-full flex items-center gap-1.5 shadow-sm italic whitespace-nowrap pr-5">
       {icon} {text}
     </span>
   );
@@ -49,7 +49,7 @@ export const NavTab: React.FC<{ active: boolean, onClick: () => void, label: str
       ${isMobile ? 'w-full justify-start' : 'shrink-0 pr-5'}
       ${active 
         ? 'bg-gradient-to-r from-red-600 to-red-500 text-white shadow-[0_0_20px_rgba(239,68,68,0.4)] border border-red-400/30 translate-y-[-1px]' 
-        : 'text-zinc-500 bg-zinc-900/0 hover:bg-zinc-800/50 hover:text-zinc-200 border border-transparent hover:border-white/5 active:scale-95'
+        : 'text-zinc-400 bg-zinc-900/0 hover:bg-zinc-800/50 hover:text-zinc-200 border border-transparent hover:border-white/5 active:scale-95'
       }
     `}
   >
@@ -66,20 +66,20 @@ export const AddressBox: React.FC<{ label: string, address: string, onCopy: (msg
   return (
     <div className="glass-card rounded-xl sm:rounded-2xl p-3 sm:p-5 border border-white/5 flex flex-row items-center justify-between gap-3 sm:gap-5 group flex-1 shadow-xl overflow-hidden hover:border-amber-500/20 transition-colors w-full">
       <div className="flex items-center gap-3 sm:gap-4 overflow-hidden flex-1">
-        <div className={`p-2 sm:p-2.5 rounded-lg sm:rounded-xl bg-zinc-900 text-zinc-500 shrink-0 group-hover:text-amber-500 transition-colors shadow-inner flex items-center justify-center`}>
+        <div className={`p-2 sm:p-2.5 rounded-lg sm:rounded-xl bg-zinc-900 text-zinc-400 shrink-0 group-hover:text-amber-500 transition-colors shadow-inner flex items-center justify-center`}>
             <Hash className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
         </div>
         <div className="flex flex-col min-w-0 overflow-hidden flex-1">
-          <span className="text-[8px] font-black uppercase tracking-[0.25em] text-zinc-600 italic pr-2 leading-none group-hover:text-amber-500/50 transition-colors">{label}</span>
-          <span className="text-[9px] sm:text-xs font-mono font-bold text-zinc-400 mt-0.5 sm:mt-1 pr-1 w-full block break-all leading-tight">{address}</span>
+          <span className="text-[8px] font-black uppercase tracking-[0.25em] text-zinc-400 italic pr-2 leading-none group-hover:text-amber-500/50 transition-colors">{label}</span>
+          <span className="text-[9px] sm:text-xs font-mono font-bold text-zinc-300 mt-0.5 sm:mt-1 pr-1 w-full block break-all leading-tight">{address}</span>
         </div>
       </div>
       <div className="flex items-center gap-2 shrink-0">
-        <button onClick={handleCopy} className="p-2 sm:p-2.5 bg-zinc-950/80 rounded-lg sm:rounded-xl border border-white/5 text-zinc-500 hover:text-amber-500 transition-all shadow-inner active:scale-90 flex items-center justify-center">
+        <button onClick={handleCopy} className="p-2 sm:p-2.5 bg-zinc-950/80 rounded-lg sm:rounded-xl border border-white/5 text-zinc-400 hover:text-amber-500 transition-all shadow-inner active:scale-90 flex items-center justify-center">
             <Copy className="w-3.5 h-3.5 sm:w-[14px] sm:h-[14px]" />
         </button>
         {explorerLink && (
-            <a href={explorerLink} target="_blank" rel="noreferrer" className="p-2 sm:p-2.5 bg-zinc-950/80 rounded-lg sm:rounded-xl border border-white/5 text-zinc-500 hover:text-emerald-500 transition-all shadow-inner active:scale-90 flex items-center justify-center">
+            <a href={explorerLink} target="_blank" rel="noreferrer" className="p-2 sm:p-2.5 bg-zinc-950/80 rounded-lg sm:rounded-xl border border-white/5 text-zinc-400 hover:text-emerald-500 transition-all shadow-inner active:scale-90 flex items-center justify-center">
                 <ExternalLink className="w-3.5 h-3.5 sm:w-[14px] sm:h-[14px]" />
             </a>
         )}
@@ -107,9 +107,9 @@ export const Notification: React.FC<{ show: boolean, type: 'error' | 'success' |
       <div className={`glass-card p-5 sm:p-6 rounded-[1.5rem] sm:rounded-[2rem] border ${colors[type]} flex gap-4 items-center shadow-3xl w-full sm:w-auto sm:min-w-[280px] sm:max-w-[400px] backdrop-blur-2xl bg-[#0a0a0c]/95`}>
         <div className="flex-1 overflow-hidden">
           <h4 className="font-black text-white text-xs uppercase italic tracking-wider pr-4 truncate">{title}</h4>
-          <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-wide mt-1 italic pr-4 break-words">{message}</p>
+          <p className="text-[10px] text-zinc-400 font-bold uppercase tracking-wide mt-1 italic pr-4 break-words">{message}</p>
         </div>
-        <button onClick={onClose} className="text-zinc-700 hover:text-white shrink-0 active:scale-75 transition-transform"><X size={16}/></button>
+        <button onClick={onClose} className="text-zinc-400 hover:text-white shrink-0 active:scale-75 transition-transform"><X size={16}/></button>
       </div>
     </div>
   );
@@ -154,17 +154,19 @@ export const ResultModal: React.FC<{
         title: t('modal.loserTitle'), 
         subtitle: t('modal.loserSubtitle'), 
         desc: t('modal.loserDesc'), 
-        icon: <Ghost className="text-zinc-600" size={64} />, 
+        icon: <Ghost className="text-zinc-500" size={64} />, 
         theme: 'border-zinc-800 bg-zinc-950/95' 
     },
     guest: { 
         title: t('modal.guestTitle'), 
         subtitle: t('modal.guestSubtitle'), 
         desc: t('modal.guestDesc'), 
-        icon: <Sparkles className="text-red-500" size={64} />, 
-        theme: 'border-red-500/20 bg-gradient-to-b from-red-950/80 to-black/95' 
+        icon: <div className="scale-110 relative"><LuckyLogo size={80} /><PartyPopper className="absolute -top-6 -right-6 text-red-500 animate-bounce" size={28} /><Sparkles className="absolute -bottom-2 -left-6 text-amber-500 animate-pulse" size={24} /></div>, 
+        theme: 'border-red-500/40 bg-gradient-to-b from-red-950/80 to-zinc-900/95 shadow-[0_0_40px_rgba(239,68,68,0.2)]' 
     }
   }[mode];
+
+  const isFestive = mode === 'winner' || mode === 'guest';
 
   return (
     <div className="fixed inset-0 z-[2000] flex items-center justify-center p-4">
@@ -189,34 +191,34 @@ export const ResultModal: React.FC<{
         )}
 
         <div className="space-y-6 pt-4 relative z-10">
-          <div className={`w-24 h-24 sm:w-32 sm:h-32 rounded-[2.5rem] flex items-center justify-center mx-auto shadow-2xl relative overflow-visible ${mode === 'winner' ? 'bg-gradient-to-br from-amber-500/20 to-red-600/20 border border-amber-500/50' : 'bg-zinc-900 border border-white/10 overflow-hidden'}`}>
+          <div className={`w-24 h-24 sm:w-32 sm:h-32 rounded-[2.5rem] flex items-center justify-center mx-auto shadow-2xl relative overflow-visible ${isFestive ? 'bg-gradient-to-br from-amber-500/20 to-red-600/20 border border-amber-500/50' : 'bg-zinc-900 border border-white/10 overflow-hidden'}`}>
             {content.icon}
             {mode === 'winner' && <div className="absolute inset-0 bg-amber-500/10 rounded-[2.5rem] animate-ping pointer-events-none duration-1000"></div>}
           </div>
           
           <div className="space-y-2">
-            <h2 className={`text-3xl sm:text-5xl font-black italic uppercase pr-4 leading-tight ${mode === 'winner' ? 'text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-yellow-500' : 'text-white'}`}>{content.title}</h2>
-            <p className={`${mode === 'winner' ? 'text-amber-300' : 'text-red-500'} text-[11px] font-black uppercase tracking-[0.5em] italic pr-4`}>{content.subtitle}</p>
+            <h2 className={`text-3xl sm:text-5xl font-black italic uppercase pr-4 leading-tight ${mode === 'winner' ? 'text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-yellow-500' : mode === 'guest' ? 'text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-amber-200' : 'text-white'}`}>{content.title}</h2>
+            <p className={`${isFestive ? 'text-amber-500' : 'text-red-500'} text-[11px] font-black uppercase tracking-[0.5em] italic pr-4`}>{content.subtitle}</p>
           </div>
           
-          <div className={`p-6 rounded-[2.5rem] border space-y-6 shadow-inner ${mode === 'winner' ? 'bg-gradient-to-br from-red-950/50 to-amber-900/30 border-amber-500/30' : 'bg-black/80 border-white/5'}`}>
+          <div className={`p-6 rounded-[2.5rem] border space-y-6 shadow-inner ${isFestive ? 'bg-gradient-to-br from-red-950/50 to-amber-900/30 border-amber-500/30' : 'bg-black/80 border-white/5'}`}>
             <div className="space-y-1">
-              <span className={`text-[9px] font-black uppercase italic pr-4 ${mode === 'winner' ? 'text-amber-500' : 'text-zinc-600'}`}>{mode === 'winner' ? t('modal.winnerSent') : t('modal.targetAddr')}</span>
-              <p className={`text-xs font-mono font-bold break-all select-all ${mode === 'winner' ? 'text-amber-200' : 'text-zinc-300'}`}>{mode === 'winner' ? t('modal.winnerSent') : winnerAddress}</p>
+              <span className={`text-[9px] font-black uppercase italic pr-4 ${isFestive ? 'text-amber-500' : 'text-zinc-400'}`}>{mode === 'winner' ? t('modal.winnerSent') : t('modal.targetAddr')}</span>
+              <p className={`text-xs font-mono font-bold break-all select-all ${isFestive ? 'text-amber-200' : 'text-zinc-300'}`}>{mode === 'winner' ? t('modal.winnerSent') : winnerAddress}</p>
             </div>
             
             <div className="text-4xl sm:text-6xl font-black text-white stat-glow tabular-nums tracking-tighter leading-none">
-              {formatBNBValue(amount)} <span className={`text-base sm:text-xl uppercase italic pr-2 ${mode === 'winner' ? 'text-amber-500' : 'accent-gradient'}`}>BNB</span>
+              {formatBNBValue(amount)} <span className={`text-base sm:text-xl uppercase italic pr-2 ${isFestive ? 'text-amber-500' : 'accent-gradient'}`}>BNB</span>
             </div>
             
             {txHash && (
-              <a href={`https://bscscan.com/tx/${txHash}`} target="_blank" rel="noreferrer" className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-[9px] font-black uppercase italic tracking-widest transition-all ${mode === 'winner' ? 'bg-amber-500/10 border border-amber-500/30 text-amber-500 hover:bg-amber-500/20' : 'bg-zinc-900/50 border border-white/5 text-zinc-500 hover:text-red-400'}`}><Eye size={12} /> {t('modal.viewProof')}</a>
+              <a href={`https://bscscan.com/tx/${txHash}`} target="_blank" rel="noreferrer" className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-[9px] font-black uppercase italic tracking-widest transition-all ${isFestive ? 'bg-amber-500/10 border border-amber-500/30 text-amber-500 hover:bg-amber-500/20' : 'bg-zinc-900/50 border border-white/5 text-zinc-400 hover:text-red-400'}`}><Eye size={12} /> {t('modal.viewProof')}</a>
             )}
           </div>
           
-          <p className={`${mode === 'winner' ? 'text-amber-500/60' : 'text-zinc-500'} text-[10px] leading-relaxed font-bold uppercase italic pr-4`}>{content.desc}</p>
+          <p className={`${isFestive ? 'text-amber-500/60' : 'text-zinc-400'} text-[10px] leading-relaxed font-bold uppercase italic pr-4`}>{content.desc}</p>
           
-          <button onClick={onClose} className={`w-full py-5 rounded-[2rem] font-black uppercase italic active:scale-95 transition-all shadow-xl ${mode === 'winner' ? 'bg-gradient-to-r from-amber-500 to-red-600 text-white shadow-red-500/30 hover:shadow-red-500/50' : 'action-button'}`}>
+          <button onClick={onClose} className={`w-full py-5 rounded-[2rem] font-black uppercase italic active:scale-95 transition-all shadow-xl ${isFestive ? 'bg-gradient-to-r from-amber-500 to-red-600 text-white shadow-red-500/30 hover:shadow-red-500/50' : 'action-button'}`}>
             {t('modal.close')} {mode !== 'winner' && `(${Math.ceil(timeLeft)}s)`}
           </button>
         </div>
@@ -228,13 +230,13 @@ export const ResultModal: React.FC<{
 export const DigitBox: React.FC<{ label: string, value: string | number }> = ({ label, value }) => (
   <div className="flex flex-col items-center gap-2 p-3 sm:p-4 bg-zinc-900/50 border border-white/5 rounded-2xl min-w-[60px] sm:min-w-[80px] shadow-inner flex-1">
     <span className="text-2xl sm:text-3xl font-black text-white tabular-nums tracking-tighter">{value}</span>
-    <span className="text-[7px] sm:text-[8px] font-black text-zinc-600 uppercase italic pr-1">{label}</span>
+    <span className="text-[7px] sm:text-[8px] font-black text-zinc-400 uppercase italic pr-1">{label}</span>
   </div>
 );
 
 export const HeroStat: React.FC<{ icon: React.ReactNode, label: string, value: string | number }> = ({ icon, label, value }) => (
   <div className="space-y-2">
-    <div className="flex items-center gap-2 text-zinc-500 group-hover:text-amber-500/50 transition-colors">
+    <div className="flex items-center gap-2 text-zinc-400 group-hover:text-amber-500/50 transition-colors">
       {icon}
       <span className="text-[9px] font-black uppercase tracking-wider italic pr-2 whitespace-nowrap">{label}</span>
     </div>
@@ -244,10 +246,10 @@ export const HeroStat: React.FC<{ icon: React.ReactNode, label: string, value: s
 
 export const Pagination: React.FC<{ current: number, total: number, onChange: (page: number) => void }> = ({ current, total, onChange }) => (
   <div className="flex items-center justify-between px-6 sm:px-8 py-4 bg-white/5 border-t border-white/5">
-    <span className="text-[9px] font-black text-zinc-600 uppercase italic">第 {current + 1} / {Math.max(1, total)} 页</span>
+    <span className="text-[9px] font-black text-zinc-400 uppercase italic">第 {current + 1} / {Math.max(1, total)} 页</span>
     <div className="flex items-center gap-2">
-      <button disabled={current === 0} onClick={() => onChange(current - 1)} className="p-1.5 rounded-lg border border-white/5 text-zinc-500 hover:text-white disabled:opacity-30 disabled:hover:text-zinc-500 transition-all"><ChevronLeft size={14} /></button>
-      <button disabled={current >= total - 1} onClick={() => onChange(current + 1)} className="p-1.5 rounded-lg border border-white/5 text-zinc-500 hover:text-white disabled:opacity-30 disabled:hover:text-zinc-500 transition-all"><ChevronRight size={14} /></button>
+      <button disabled={current === 0} onClick={() => onChange(current - 1)} className="p-1.5 rounded-lg border border-white/5 text-zinc-400 hover:text-white disabled:opacity-30 disabled:hover:text-zinc-500 transition-all"><ChevronLeft size={14} /></button>
+      <button disabled={current >= total - 1} onClick={() => onChange(current + 1)} className="p-1.5 rounded-lg border border-white/5 text-zinc-400 hover:text-white disabled:opacity-30 disabled:hover:text-zinc-500 transition-all"><ChevronRight size={14} /></button>
     </div>
   </div>
 );
@@ -258,10 +260,10 @@ export const WalletButton: React.FC<{ name: string, icon: React.ReactNode, insta
       <div className={`w-10 h-10 rounded-xl bg-zinc-900 p-1.5 flex items-center justify-center border border-white/5 transition-transform shadow-lg ${!disabled && 'group-hover:scale-110'}`}>{icon}</div>
       <div className="text-left">
         <span className="block text-xs font-black text-zinc-300 uppercase italic leading-none group-hover:text-white transition-colors">{name}</span>
-        {installed ? <span className="inline-flex items-center gap-1 text-[8px] font-black text-emerald-500 uppercase italic mt-1.5"><CheckCircle2 size={8} /> {t('wallet.detected')}</span> : <span className="inline-flex items-center gap-1 text-[8px] font-black text-zinc-600 uppercase italic mt-1.5">{t('wallet.notInstalled')}</span>}
+        {installed ? <span className="inline-flex items-center gap-1 text-[8px] font-black text-emerald-500 uppercase italic mt-1.5"><CheckCircle2 size={8} /> {t('wallet.detected')}</span> : <span className="inline-flex items-center gap-1 text-[8px] font-black text-zinc-500 uppercase italic mt-1.5">{t('wallet.notInstalled')}</span>}
       </div>
     </div>
-    {disabled ? <Loader2 size={16} className="text-zinc-600 animate-spin relative z-10"/> : <ChevronRightIcon size={16} className="text-zinc-700 group-hover:text-amber-500 group-hover:translate-x-1 transition-all relative z-10" />}
+    {disabled ? <Loader2 size={16} className="text-zinc-500 animate-spin relative z-10"/> : <ChevronRightIcon size={16} className="text-zinc-600 group-hover:text-amber-500 group-hover:translate-x-1 transition-all relative z-10" />}
     {installed && (<div className="absolute top-0 right-0 w-16 h-16 bg-emerald-500/5 blur-2xl rounded-full"></div>)}
   </button>
 );
@@ -278,7 +280,7 @@ export const CardIconBox: React.FC<{ icon: React.ReactNode, title: string, desc:
       <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center ${themes[color]} border shadow-lg group-hover:scale-110 transition-transform`}>{icon}</div>
       <div className="space-y-2">
         <h4 className="font-black text-sm text-white uppercase italic pr-4">{title}</h4>
-        <p className="text-[10px] text-zinc-500 font-bold leading-relaxed uppercase italic pr-4 group-hover:text-zinc-400 transition-colors">{desc}</p>
+        <p className="text-[10px] text-zinc-400 font-bold leading-relaxed uppercase italic pr-4 group-hover:text-zinc-300 transition-colors">{desc}</p>
       </div>
     </div>
   );
@@ -294,12 +296,12 @@ export const GovernanceSection: React.FC<{
   <div className="glass-card rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-8 border border-white/10 shadow-2xl space-y-6 sm:space-y-8">
     <div className="flex items-center justify-between">
       <h3 className="text-lg font-black text-white uppercase italic pr-4">{title}</h3>
-      <Settings size={16} className="text-zinc-700" />
+      <Settings size={16} className="text-zinc-400" />
     </div>
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
       {stats.map((s, i) => (
         <div key={i} className="space-y-1">
-          <p className="text-zinc-600 text-[9px] font-black uppercase italic pr-2">{s.label}</p>
+          <p className="text-zinc-400 text-[9px] font-black uppercase italic pr-2">{s.label}</p>
           <p className="text-sm font-mono font-black text-zinc-300">{s.value}</p>
         </div>
       ))}
@@ -313,7 +315,7 @@ export const GovernanceSection: React.FC<{
           className={`w-full py-4 px-6 bg-zinc-950/80 border border-white/5 rounded-2xl text-[10px] font-black text-zinc-400 transition-all uppercase italic text-left flex items-center justify-between group ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:text-white hover:border-red-500/30'}`}
         >
           {a.label}
-          {loading ? <Loader2 size={12} className="animate-spin text-zinc-600"/> : <ExternalLink size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" />}
+          {loading ? <Loader2 size={12} className="animate-spin text-zinc-500"/> : <ExternalLink size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" />}
         </button>
       ))}
     </div>

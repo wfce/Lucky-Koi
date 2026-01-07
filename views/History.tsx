@@ -22,7 +22,7 @@ export const History: React.FC<HistoryProps> = ({ history, historyPage, setHisto
         <div className="hidden sm:block overflow-x-auto no-scrollbar">
           <table className="w-full text-left min-w-[600px]">
             <thead>
-              <tr className="bg-white/5 text-[9px] font-black uppercase tracking-[0.2em] text-zinc-500 border-b border-white/5">
+              <tr className="bg-white/5 text-[9px] font-black uppercase tracking-[0.2em] text-zinc-400 border-b border-white/5">
                 <th className="px-6 sm:px-8 py-5 italic">{t('history.wallet')}</th><th className="px-6 sm:px-8 py-5 text-right italic">{t('history.reward')}</th><th className="px-6 sm:px-8 py-5 text-right italic">{t('history.weight')}</th><th className="px-6 sm:px-8 py-5 text-right italic">{t('history.proof')}</th>
               </tr>
             </thead>
@@ -34,7 +34,7 @@ export const History: React.FC<HistoryProps> = ({ history, historyPage, setHisto
                   <td className="px-6 sm:px-8 py-4 text-right text-red-500 font-black pr-12">{rec.percentage}%</td>
                   <td className="px-6 sm:px-8 py-4 text-right"><a href={`https://bscscan.com/tx/${rec.txHash}`} target="_blank" rel="noreferrer" className="inline-flex p-1.5 bg-zinc-950 border border-white/5 rounded-lg text-zinc-500 hover:text-white transition-all shadow-inner"><ExternalLink size={12}/></a></td>
                 </tr>
-              )) : <tr><td colSpan={4} className="text-center py-20 text-zinc-700 italic font-black uppercase">{t('history.loading')}</td></tr>}
+              )) : <tr><td colSpan={4} className="text-center py-20 text-zinc-500 italic font-black uppercase">{t('history.loading')}</td></tr>}
             </tbody>
           </table>
         </div>
@@ -44,24 +44,24 @@ export const History: React.FC<HistoryProps> = ({ history, historyPage, setHisto
             <div key={i} className="bg-zinc-950/50 border border-white/5 rounded-2xl p-4 space-y-3 shadow-inner">
                 <div className="flex justify-between items-start">
                     <div className="space-y-1">
-                        <p className="text-[9px] text-zinc-500 font-black uppercase tracking-wider italic">{t('history.wallet')}</p>
+                        <p className="text-[9px] text-zinc-400 font-black uppercase tracking-wider italic">{t('history.wallet')}</p>
                         <p className="text-xs text-white font-mono font-bold break-all">{rec.winner}</p>
                     </div>
                     <a href={`https://bscscan.com/tx/${rec.txHash}`} target="_blank" rel="noreferrer" className="p-2 bg-zinc-900 border border-white/5 rounded-lg text-zinc-500 hover:text-white transition-all"><ExternalLink size={14}/></a>
                 </div>
                 <div className="grid grid-cols-2 gap-4 border-t border-white/5 pt-3">
                      <div>
-                        <p className="text-[9px] text-zinc-500 font-black uppercase tracking-wider italic">{t('history.reward')}</p>
+                        <p className="text-[9px] text-zinc-400 font-black uppercase tracking-wider italic">{t('history.reward')}</p>
                         <p className="text-sm text-emerald-400 font-black">{formatBNBValue(rec.reward)} <span className="text-[9px]">BNB</span></p>
                      </div>
                      <div className="text-right">
-                        <p className="text-[9px] text-zinc-500 font-black uppercase tracking-wider italic">{t('history.weight')}</p>
+                        <p className="text-[9px] text-zinc-400 font-black uppercase tracking-wider italic">{t('history.weight')}</p>
                         <p className="text-sm text-red-500 font-black">{rec.percentage}%</p>
                      </div>
                 </div>
             </div>
           )) : (
-            <div className="text-center py-10 text-zinc-700 italic font-black uppercase text-xs">{t('history.empty')}</div>
+            <div className="text-center py-10 text-zinc-500 italic font-black uppercase text-xs">{t('history.empty')}</div>
           )}
         </div>
 
